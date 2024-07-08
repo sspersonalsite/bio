@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+
+
+<html>
+	<head>
+		<title>Scott Seidel</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="icon" href="../media/icon1.png" type="image/png">
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+		<script type="text/javascript" async
+        	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    	</script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="../index.html" class="logo">Scott Seidel</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="../index.html">About</a></li>
+							<li><a href="../experience.html">Experience</a></li>
+							<li><a href="../musings.html">Musings</a></li>
+							<li class="active"><a href="llm001.html">Full Post</a></li>
+						</ul>
+						
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/scott-seidel" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+<!--
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+-->
+						</ul>
+
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">June 29, 2024</span>
+									<h1>Geographic Bias in LLMs: A Global Challenge</h1>
+									<p>#bias #geographic #socioeconomic #diversity #LLM #journalclub</p>
+								</header>	
+
+									<p>In recent years, the rise of Large Language Models (LLMs) has revolutionized the way we process and retrieve information. These models, powered by vast amounts of data, have demonstrated remarkable capabilities in generating human-like text and providing us with information limited only by our imagination. However, a significant challenge persists: factual accuracy, especially on a global scale. A recent <a href="https://dl.acm.org/doi/10.1145/3630106.3658967">publication by Moaryeri et al.</a> provides an initial look on this issue by evaluating the accuracy of 20 different LLMs in recalling 11 different country-specific statistics (e.g., population, GDP, and others found in <a href="https://data.worldbank.org/">World Bank data</a>). The findings reveal an quantitative comparison in accuracy of LLMs across different regions and income levels.</p>
+									
+									<h2>A Snapshot of Geographic Bias</h2>
+									<div class="image main">
+									    <img src="../media/mean_region_error1.png" alt="" style="display: block; margin: 4rem 0; width: 70%; margin-left: auto; margin-right: auto;"/>
+									</div>									
+									<p>Moaryeri et al.'s research provides a critical assessment of LLM performance, highlighting the persistent struggle to create globally equitable algorithms. By examining how well these models recall factual data about various countries while using controlled and consistent prompts, the study offers a benchmark for measuring geographic bias. This article quantifies algorithm performance using Absolute Relative Error which is defined as \( \frac{|a - b|}{\max(a, b)} \), where <i>a</i> and <i>b</i> are LLM generated value and the ground truth value from World Bank data. When analyzing the data by region, we can see 50% higher error rates in data related to sub-Saharan Africa region compared to the North American region.</p>
+									
+									<h2>Income Levels and Data Accuracy</h2>
+									<div class="image main">
+									    <img src="../media/mean_income_error1.png" alt="" style="display: block; margin: 4rem 0; width: 40%; margin-left: auto; margin-right: auto;"/>
+									</div></p>
+									<p>Similarly, when countries were reclassified into relative income groupings rather than regions, a similar result was observed. Although this is expected given the correlation between a country's region and its income level, the results underscore the need to consider the need to consider multiple types of classification when considering biases in LLM training and development.
+									
+									
+									<h2>Individual Country Analysis</h2>
+									<div class="image main">
+									    <img src="../media/mean_country_error1.png" alt="" style="display: block; margin: 4rem 0; width: 100%; margin-left: auto; margin-right: auto;"/>
+									</div></p>
+									<p>Delving deeper into the data, the disparity in LLM accuracy becomes even more pronounced when examining individual countries on a more anecdotal levels. Of the top 15 countries with the most accurate responses, all 15 belonged to the high-income group. Of the bottom 15 countries with the least accurate responses, all 15 belong to the low-income group.
+
+									
+									<h2>Broader Implications and the Path Forward</h2>
+									<p>The findings from this study have far-reaching implications, particularly as LLMs become more integrated into our daily lives and various sectors such as healthcare, education, and finance. Geographic and socioeconomic biases in these models can perpetuate existing inequalities, limiting access to accurate information for disadvantaged groups. Addressing these biases is crucial to ensuring that the benefits of AI are equitably distributed. </p>
+									<p>To mitigate these biases, several strategies must be employed. First, data collection efforts need to be more inclusive, ensuring diverse and representative datasets. This includes sourcing high-quality data from underrepresented regions. Second, model training practices should be refined to account for and correct biases. Advanced algorithms and techniques, such as fairness-aware machine learning, can help reduce the impact of biased data. Finally, transparency in the development and deployment of LLMs through sharing methodologies, datasets, and evaluation metrics fosters collaboration and drives progress towards more equitable AI.</p>
+									<p>In conclusion, as LLMs continue to evolve and permeate various aspects of society, addressing geographic and socioeconomic biases is not just a technical challenge but a moral imperative. By striving for fairness and inclusivity in AI, we can harness the full potential of these technologies to create a more equitable world. The journey towards bias-free AI is ongoing, and it requires collective effort, innovation, and a commitment to global fairness.</p>
+
+								<ul class="actions special">
+									<li><a href="../musings.html" class="button large">Musings</a></li>
+								</ul>
+
+							</section>
+
+					</div>
+
+						<!-- Footer -->
+							<footer>
+								
+							</footer>
+
+					</div>
+
+
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; 2024</li><li>Based in California</li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+
+
+<html>
+	<head>
+		<title>Scott Seidel</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="icon" href="../media/icon1.png" type="image/png">
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+		<script type="text/javascript" async
+        	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    	</script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="../index.html" class="logo">Scott Seidel</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="../index.html">About</a></li>
+							<li><a href="../experience.html">Experience</a></li>
+							<li><a href="../musings.html">Musings</a></li>
+							<li class="active"><a href="llm003.html">Full Post</a></li>
+						</ul>
+						
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/scott-seidel" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+<!--
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+-->
+						</ul>
+
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">July 5, 2024</span>
+									<h1>Expansive Landscape of LLM Training Data</h1>
+									<p>#data #LLM #commentary</p>
+								</header>
+
+								<p>Large language models (LLMs) are renowned for their vast training datasets, but what exactly constitutes "large"? Are these models approaching the limits of available digitized text data?</p>
+
+								<h2>Defining "Large" in LLM Training Data</h2>
+								<p>While newer generation models have become more secretive about their inner workings due to competitive pressures, earlier models like OpenAI’s GPT-3 provide some insight. GPT-3, for instance, was trained on a data set with <a href="https://arxiv.org/pdf/2005.14165"><1TB of text data</a>. Much of this data comes from web scraping, particularly using datasets like <a href="https://commoncrawl.org/">Common Crawl</a>.</p>
+
+								<h2>Sources of Training Data</h2>
+								<p>The <a href="https://www.idc.com/about">IDC</a> forecasts that the world will have produced <a href="https://www.readkong.com/page/the-digitization-of-the-world-from-edge-to-core-8666239">175 zetabytes</a> (175,000,000,000 TB) of data by 2025. Irrespective of the accuracy of this forecast, most of that data is not available as training data. If we limit our analysis to the amount of data found on the web through web indexing such as Common Crawl, then we drop down to <a href="https://foundation.mozilla.org/en/research/library/generative-ai-training-data/common-crawl/">9.5 petabytes</a> (1000 TB). Even still, for LLMs, we are interested in relevant text data only. So instead of working top-down on this estimate, let's work from the bottom-up and look at relevant web data, books, and scholarly articles, while ignoring code repositories and social media content.</p>
+
+								<h3>The Web</h3>
+								
+								<p>Data from the web can be accessed through web crawlers such as Common Crawl. While web crawlers do not index the entire web, they provide a rough estimate of the easily accessible web. According to crawler estimates, there are approximately <a href="https://www.worldwidewebsize.com/">3 billion</a> web pages currently indexed, as outlined in the estimate <a href="https://www.dekunder.nl/Media/10.1007_s11192-016-1863-z.pdf">methodology</a>. Assuming an average of 500 words per page and 6 bytes per word, this amounts to roughly 1.5 trillion words or 9TB of text data. Including historical web pages would significantly increase this figure to around <a href="https://commoncrawl.github.io/cc-crawl-statistics/plots/crawlsize/cumulative.png">200 billion web pages</a>, equating to about 100 trillion words or 600TB of text data. However, using historical data would involve substantial duplication due to the repetitive nature of web content over time.</p>
+								<div class="image main">
+									    <img src="../media/cumulative_crawl.png" alt="" style="display: block; margin: 4rem 0; width: 50%; margin-left: auto; margin-right: auto;"/>
+								</div>
+
+								<h3>Books</h3>
+								<p>There are around <a href="https://cdlib.org/services/pad/massdig/where-to-find-our-books/">40 million digitized books available</a> today. With an average of 64,000 words per book and 6 bytes per word, this source alone provides about 2.5 trillion words, or 15TB of text data. Books offer a wealth of diverse, high-quality information spanning numerous genres and disciplines, making them invaluable for training LLMs.</p>
+
+								<h3>Scholarly Articles</h3>
+								<p>The world of academia contributes approximately <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0093949">114 million scholarly articles</a>. Averaging 6,000 words per article and 6 bytes per word, this results in about 0.6 trillion words, or 4TB of text data. Scholarly articles are rich in specialized knowledge and technical information, enhancing the depth and precision of LLM training datasets.</p>
+
+								<h2>Summing It Up</h2>
+								<p>Combining these conservative estimates, the total available text data from these sources amounts to about 30TB (9 + 15 + 4). Expanding our estimates to include a portion of code repositories, social media, non-indexed web pages, historical data, the total could easily reach a 2+ more orders of magnitude (let's say 3000TB conservatively).
+
+								<p>Therefore, models in the ChatGPT-3 generation are utilizing 0.03-3.0% of the data available today with training sets ~1 TB.</p>
+
+								<p>However, model performance is based on more than just the size of the data, it is also about the data quality. We will look more into the well-known saying "garbage in, garbage out" in the next post.</p>
+
+
+								<ul class="actions special">
+									<li><a href="../musings.html" class="button large">Musings</a></li>
+								</ul>
+
+							</section>
+
+					</div>
+
+						<!-- Footer -->
+							<footer>
+								
+							</footer>
+
+					</div>
+
+
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; 2024</li><li>Based in California</li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
