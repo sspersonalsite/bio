@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+
+
+<html>
+	<head>
+		<title>Scott Seidel</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="icon" href="../media/icon1.png" type="image/png">
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+		<script type="text/javascript" async
+        	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    	</script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="../index.html" class="logo">Scott Seidel</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="../index.html">About</a></li>
+							<li><a href="../experience.html">Experience</a></li>
+							<li><a href="../musings.html">Musings</a></li>
+							<li class="active"><a href="llm005.html">Full Post</a></li>
+						</ul>
+						
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/scott-seidel" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+<!--
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+-->
+						</ul>
+
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+						<section class="post">
+						    <header class="major">
+						        <span class="date">July 16, 2024</span>
+						        <h1>Energy of LLMs</h1>
+						        <p>#data #LLM #commentary</p>
+						    </header>
+
+						    <div class="image main">
+								<img src="../media/training_flops.png" alt="" style="display: block; margin: 4rem 0; width: 100%; margin-left: auto; margin-right: auto;"/>
+							</div>
+
+						    <p>The rapid increase in model parameters and training data for LLMs has led to a significant rise in compute and power requirements. Let's delve into the compute and energy demands of LLMs by examining details from OpenAI's GPT-3 <a href="https://arxiv.org/abs/2005.14165">publication</a>.</p>
+
+						    <p>Compute needs are often expressed in petaflop/s-days. One petaflop/s equals one quadrillion floating-point operations per second, and "days" indicates the duration for which this performance is sustained.</p>
+
+						    <h2>Parameter and Compute Relationship</h2>
+						    <p>The GPT-3 paper details the parameters and compute used during training for eight different model sizes:</p>
+
+						    <ul>
+						        <li>GPT-3 Small - 0.125B</li>
+						        <li>GPT-3 Medium - 0.350B</li>
+						        <li>GPT-3 Large - 0.760B</li>
+						        <li>GPT-3 XL - 1.3B</li>
+						        <li>GPT-3 2.7B - 2.7B</li>
+						        <li>GPT-3 6.7B - 6.7B</li>
+						        <li>GPT-3 13.0B - 13.0B</li>
+						        <li>GPT-3 175.0B ("GPT-3") - 175.0B</li>
+						    </ul>
+
+						    <p>The training compute can be interpolated from the graph above. For these GPT-3 models, every 1 billion parameter increase requires approximately 20 petaflop/s-days of compute. The commercial version of GPT-3, with 175 billion parameters, demands roughly 3470 petaflop/s-days of compute power.</p>
+
+						    <div class="image main">
+						        <img src="../media/training_parameter.png" alt="" style="display: block; margin: 4rem 0; width: 100%; margin-left: auto; margin-right: auto;"/>
+						    </div> 			    	 
+
+						    <h2>Compute and Energy Resources</h2>
+						    <p>The world's fastest supercomputer, <a href="https://www.olcf.ornl.gov/frontier/">Frontier</a> at Oak Ridge National Labs, cost $600 million to build and has a peak performance of 1.6 exaflop/s (1600 petaflop/s). Training GPT-3 on Frontier would take over 2 days of continuous computation:
+						    \( \frac{3470 \text{ petaflop/s-days}}{1600 \text{ petaflop/s}} = 2.2 \text{ days}\).</p>
+
+						    <p>Frontier consumes <a href="https://www.science.org/content/article/world-s-fastest-supercomputers-are-helping-sharpen-climate-forecasts-and-design-new">21 MW of power</a> at peak usage, equating to about 1090 MWh of energy over 2.2 days. Considering the average U.S. household uses <a href="https://www.eia.gov/tools/faqs/faq.php?id=97&t=3">10,800 kWh annually</a>, training GPT-3 uses the same amount of energy as approximately 100 homes use in one year.</p>
+
+						    <h2>Conclusion</h2>
+							<p>Although OpenAI has not disclosed details beyond GPT-3, estimates suggest GPT-4 has <a href="https://the-decoder.com/gpt-4-architecture-datasets-costs-and-more-leaked/">1.76 trillion parameters</a>. Assuming similar training efficiency, GPT-4 would require around 35,200 petaflop/s-days, 22 days on Frontier, and energy equivalent to over 1000 households. This highlights how the immense scale of current and future LLMs introduces significant compute and power challenges, unlike early LLMs. Companies are now focused on enhancing computational capabilities, exploring sustainable power options, and improving training efficiency to meet these demands.</p>
+   
+						    
+
+						    <ul class="actions special">
+						        <li><a href="../musings.html" class="button large">Musings</a></li>
+						    </ul>
+						</section>
+							
+
+
+						<!-- Footer -->
+							<footer>
+								
+							</footer>
+
+					</div>
+
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; 2024</li><li>Based in California</li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
