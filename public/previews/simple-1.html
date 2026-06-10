@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simple 1 — Two Column + Traveling Line</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0a0a;
+    --surface: #0f0f0f;
+    --accent: #c8a96e;
+    --text: #e4dfd6;
+    --dim: #5a5248;
+    --border: #1a1a1a;
+    --serif: 'EB Garamond', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); }
+
+  /* ---- LAYOUT ---- */
+  .wrap {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ---- LEFT COLUMN ---- */
+  .left {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 260px;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    padding: 3rem 2rem;
+    background: var(--surface);
+  }
+
+  .name {
+    font-family: var(--serif);
+    font-size: 1.75rem; font-weight: 500; line-height: 1.1;
+    letter-spacing: -0.01em; margin-bottom: 0.4rem;
+  }
+  .name em { font-style: italic; color: var(--accent); }
+  .title-line {
+    font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 2.5rem; line-height: 1.8;
+  }
+
+  /* THE ONE FEATURE: traveling indicator line */
+  .nav-track {
+    position: relative;
+    flex: 1;
+  }
+  /* The traveling dot + line */
+  .travel-line {
+    position: absolute;
+    left: -0.75rem;
+    top: 0;
+    width: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+    transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+  }
+  .travel-dot {
+    position: absolute;
+    left: -4px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(200,169,110,0.5);
+    transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3;
+    transform: translateY(-50%);
+  }
+
+  .nav-items { display: flex; flex-direction: column; gap: 0; }
+  .nav-item {
+    padding: 0.55rem 0;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--dim); text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+    cursor: pointer;
+  }
+  .nav-item::before {
+    content: '';
+    position: absolute; left: -0.75rem; top: 50%; transform: translateY(-50%);
+    width: 2px; height: 100%;
+    background: var(--border);
+  }
+  .nav-item.active { color: var(--accent); }
+
+  .left-footer {
+    margin-top: auto; padding-top: 2rem;
+    font-size: 0.68rem; color: var(--dim); line-height: 2;
+  }
+  .left-footer a { color: var(--accent); text-decoration: none; }
+
+  /* ---- RIGHT COLUMN ---- */
+  .right { margin-left: 260px; }
+
+  .section {
+    padding: 4rem 3.5rem;
+    border-bottom: 1px solid var(--border);
+    max-width: 720px;
+  }
+  .section:last-child { border-bottom: none; }
+
+  /* Section header */
+  .sec-eyebrow {
+    font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); opacity: 0.6; margin-bottom: 0.4rem;
+  }
+  .sec-title {
+    font-family: var(--serif);
+    font-size: 2rem; font-weight: 500; margin-bottom: 1.8rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* Bio */
+  .bio p {
+    font-size: 1rem; color: var(--dim); line-height: 1.85;
+    margin-bottom: 1.1rem; font-family: var(--serif);
+  }
+  .bio p a { color: var(--accent); text-decoration: none; }
+
+  /* Experience entries */
+  .exp-entry { margin-bottom: 2.2rem; }
+  .exp-entry:last-child { margin-bottom: 0; }
+  .exp-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 0.3rem; gap: 1rem;
+  }
+  .exp-role {
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 500;
+  }
+  .exp-date {
+    font-size: 0.68rem; color: var(--dim); letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .exp-org {
+    font-size: 0.72rem; letter-spacing: 0.06em; color: var(--accent);
+    margin-bottom: 0.5rem; opacity: 0.8;
+  }
+  .exp-desc {
+    font-size: 0.88rem; color: var(--dim); line-height: 1.75;
+  }
+  .exp-rule { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* Posts */
+  .post-entry { margin-bottom: 1.6rem; display: flex; gap: 1.5rem; align-items: baseline; }
+  .post-date { font-size: 0.68rem; color: var(--dim); min-width: 90px; letter-spacing: 0.04em; }
+  .post-title { font-family: var(--serif); font-size: 0.98rem; }
+  .post-title a { color: var(--text); text-decoration: none; }
+  .post-title a:hover { color: var(--accent); }
+
+  /* Hero name section */
+  .hero-section {
+    padding: 4rem 3.5rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-big {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 500; letter-spacing: -0.02em; line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+  .hero-big em { font-style: italic; color: var(--accent); }
+  .hero-sub { font-size: 0.88rem; color: var(--dim); line-height: 1.8; max-width: 500px; }
+
+  .preview-badge { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--accent); color: var(--bg); padding: 0.38rem 0.9rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 20px; z-index: 999; }
+  .back-bar { position: fixed; bottom: 1.5rem; left: 270px; background: #111; border: 1px solid var(--border); color: var(--dim); padding: 0.38rem 0.9rem; font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 20px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .back-bar:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← All Previews</a>
+<div class="preview-badge">Simple 1 — Traveling Line</div>
+
+<div class="wrap">
+  <aside class="left">
+    <div class="name">Scott<br><em>Seidel</em></div>
+    <div class="title-line">Managing Director<br>AI Data Programs</div>
+
+    <div class="nav-track" id="navTrack">
+      <div class="travel-line" id="travelLine" style="height:0"></div>
+      <div class="travel-dot" id="travelDot"></div>
+      <nav class="nav-items">
+        <a class="nav-item active" data-target="about" href="#about">About</a>
+        <a class="nav-item" data-target="experience" href="#experience">Experience</a>
+        <a class="nav-item" data-target="musings" href="#musings">Musings</a>
+      </nav>
+    </div>
+
+    <div class="left-footer">
+      Ph.D. Chemical Engineering<br>
+      California, USA<br>
+      <a href="#">LinkedIn →</a>
+    </div>
+  </aside>
+
+  <main class="right">
+    <div class="hero-section">
+      <h1 class="hero-big">Scott<br><em>Seidel</em></h1>
+      <p class="hero-sub">Managing Director with 14 years leading global AI data programs across autonomous vehicles, AR/VR, biometrics, and materials science research.</p>
+    </div>
+
+    <div class="section" id="about">
+      <p class="sec-eyebrow">Background</p>
+      <h2 class="sec-title">About</h2>
+      <div class="bio">
+        <p>I am driven by tackling the most intriguing challenges in product development. With a Ph.D. in Chemical Engineering and over 14 years managing technical programs, I bring expertise across diverse domains.</p>
+        <p>Beginning my career in <a href="#">materials science research</a>, I discovered my passion for innovative tech products during my tenure as a failure analysis engineer. I pivoted to consulting for Big Tech clients, directing global-scale data programs critical to developing some of the leading AI technologies on the market today.</p>
+        <p>Currently Managing Director at <a href="#">Soqono</a>, where I work with leading technology companies to design and execute custom AI training data collection programs.</p>
+      </div>
+    </div>
+
+    <div class="section" id="experience">
+      <p class="sec-eyebrow">Career</p>
+      <h2 class="sec-title">Experience</h2>
+
+      <div class="exp-entry">
+        <div class="exp-header">
+          <span class="exp-role">Managing Director, AI Data Programs</span>
+          <span class="exp-date">2022 — Present</span>
+        </div>
+        <div class="exp-org">Soqono</div>
+        <p class="exp-desc">Directing global AI training data collection programs serving AR/VR, autonomous vehicles, biometrics, computational photography, and wearables for leading technology companies worldwide.</p>
+      </div>
+      <div class="exp-rule"></div>
+
+      <div class="exp-entry">
+        <div class="exp-header">
+          <span class="exp-role">AI & Operations Programs</span>
+          <span class="exp-date">2019 — 2022</span>
+        </div>
+        <div class="exp-org">Cruise</div>
+        <p class="exp-desc">Led VP-sponsored programs critical to mitigating risks and resolving bottlenecks during the scaling of autonomous vehicle technology. Collaborated across engineering and operations.</p>
+      </div>
+      <div class="exp-rule"></div>
+
+      <div class="exp-entry">
+        <div class="exp-header">
+          <span class="exp-role">Senior Program Manager</span>
+          <span class="exp-date">2014 — 2019</span>
+        </div>
+        <div class="exp-org">Big Tech (Consulting)</div>
+        <p class="exp-desc">Directed global-scale data programs across AR/VR, biometrics, and computational photography for leading AI product development efforts.</p>
+      </div>
+      <div class="exp-rule"></div>
+
+      <div class="exp-entry">
+        <div class="exp-header">
+          <span class="exp-role">Ph.D., Chemical Engineering</span>
+          <span class="exp-date">2009 — 2014</span>
+        </div>
+        <div class="exp-org">University Research</div>
+        <p class="exp-desc">Pioneered novel material processing methods for consumer electronics, biomedical, and aerospace applications. 12 peer-reviewed publications. 1 patent.</p>
+      </div>
+    </div>
+
+    <div class="section" id="musings">
+      <p class="sec-eyebrow">Writing</p>
+      <h2 class="sec-title">Musings</h2>
+
+      <div class="post-entry"><span class="post-date">Sep 10, 2024</span><div class="post-title"><a href="#">The Gap Between Simulation and Real-world Mileage Data</a></div></div>
+      <div class="post-entry"><span class="post-date">Aug 13, 2024</span><div class="post-title"><a href="#">Genetic Diversity and Model Collapse</a></div></div>
+      <div class="post-entry"><span class="post-date">Aug 6, 2024</span><div class="post-title"><a href="#">LLM Collapse from Self-Generated Data</a></div></div>
+      <div class="post-entry"><span class="post-date">Jul 30, 2024</span><div class="post-title"><a href="#">The Energy Cost of LLMs</a></div></div>
+      <div class="post-entry"><span class="post-date">Jul 23, 2024</span><div class="post-title"><a href="#">Role of Data Quality in Training LLMs</a></div></div>
+      <div class="post-entry"><span class="post-date">Jul 9, 2024</span><div class="post-title"><a href="#">Benefits of Centralized TPM Teams</a></div></div>
+      <div class="post-entry"><span class="post-date">Jul 2, 2024</span><div class="post-title"><a href="#">Geographic Bias in LLMs</a></div></div>
+    </div>
+  </main>
+</div>
+
+<script>
+// THE ONE FEATURE: a gold line + dot travel down the left nav track
+// anchoring to whichever section is in view
+
+const sections = ['about', 'experience', 'musings'];
+const navItems = document.querySelectorAll('.nav-item');
+const travelLine = document.getElementById('travelLine');
+const travelDot = document.getElementById('travelDot');
+const navTrack = document.getElementById('navTrack');
+
+function updateTravel(activeId) {
+  navItems.forEach(n => n.classList.toggle('active', n.dataset.target === activeId));
+  const activeEl = document.querySelector(`.nav-item[data-target="${activeId}"]`);
+  if (!activeEl) return;
+
+  const trackRect = navTrack.getBoundingClientRect();
+  const itemRect = activeEl.getBoundingClientRect();
+  const itemTop = itemRect.top - trackRect.top + itemRect.height / 2;
+
+  travelDot.style.top = itemTop + 'px';
+
+  // Line grows from top of nav to current item
+  const firstItem = document.querySelector('.nav-item');
+  const firstRect = firstItem.getBoundingClientRect();
+  const lineTop = firstRect.top - trackRect.top + firstRect.height / 2;
+  travelLine.style.top = lineTop + 'px';
+  travelLine.style.height = Math.max(0, itemTop - lineTop) + 'px';
+}
+
+// Intersection observer
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) updateTravel(e.target.id);
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) io.observe(el);
+});
+
+updateTravel('about');
+</script>
+</body>
+</html>

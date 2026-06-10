@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Previews — Scott Seidel</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #080808; color: #e8e2d9;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh; padding: 3rem 2rem;
+  }
+  h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.05em; color: #6a6058; text-transform: uppercase; margin-bottom: 0.4rem; }
+  p { font-size: 0.85rem; color: #3a3428; margin-bottom: 3rem; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  .card {
+    border: 1px solid #1a1a1a; border-radius: 6px; overflow: hidden;
+    text-decoration: none; color: inherit; transition: border-color 0.2s, transform 0.2s;
+    display: block;
+  }
+  .card:hover { border-color: #c8a96e; transform: translateY(-3px); }
+
+  .card-thumb {
+    height: 180px; display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; font-weight: 800; letter-spacing: -0.04em;
+    position: relative; overflow: hidden;
+  }
+  .a-thumb { background: linear-gradient(135deg, #080808 0%, #0f0a04 100%); color: #c8a96e; }
+  .b-thumb { background: linear-gradient(160deg, #070707 0%, #100c05 100%); }
+  .b-thumb span { background: linear-gradient(160deg, #fff 40%, #8a7050 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .d-thumb { background: #060606; color: #c8a96e; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; letter-spacing: 0; }
+  .e-thumb { background: #050505; }
+  .e-thumb span { font-family: 'Playfair Display', Georgia, serif; font-style: italic; color: #c8a96e; font-size: 3.5rem; }
+
+  /* particle dots for A thumb */
+  .dots { position: absolute; inset: 0; }
+  .dot { position: absolute; border-radius: 50%; background: rgba(200,169,110,0.5); }
+
+  /* marquee strip for E thumb */
+  .e-strip {
+    position: absolute; top: 0; left: 0; right: 0; height: 20px;
+    background: #c8a96e; display: flex; align-items: center;
+    font-size: 0.55rem; font-weight: 900; letter-spacing: 0.12em; color: #050505;
+    text-transform: uppercase; overflow: hidden; white-space: nowrap;
+    padding: 0 0.5rem;
+  }
+
+  /* typewriter cursor for D */
+  .tcursor { display: inline-block; width: 3px; height: 1.2em; background: #c8a96e; margin-left: 4px; vertical-align: text-bottom; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .card-body { padding: 1.25rem 1.4rem 1.5rem; background: #0c0c0c; }
+  .card-tag { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: #c8a96e; margin-bottom: 0.4rem; }
+  .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .card-desc { font-size: 0.82rem; color: #6a6058; line-height: 1.6; }
+  .open-btn {
+    display: inline-block; margin-top: 1rem;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #c8a96e; border: 1px solid #2a2520; padding: 0.35rem 0.9rem;
+    border-radius: 3px; transition: background 0.2s, color 0.2s;
+  }
+  .card:hover .open-btn { background: #c8a96e; color: #080808; border-color: #c8a96e; }
+</style>
+</head>
+<body>
+
+<h1>Design Previews</h1>
+<p>Click any option to open the full interactive preview. All previews are live — scroll, hover, interact.</p>
+
+<div class="grid">
+
+  <a href="/previews/option-a.html" class="card">
+    <div class="card-thumb a-thumb">
+      <div class="dots">
+        <div class="dot" style="width:4px;height:4px;top:25%;left:20%;"></div>
+        <div class="dot" style="width:6px;height:6px;top:60%;left:40%;"></div>
+        <div class="dot" style="width:3px;height:3px;top:40%;left:70%;"></div>
+        <div class="dot" style="width:5px;height:5px;top:75%;left:60%;"></div>
+        <div class="dot" style="width:4px;height:4px;top:30%;left:85%;"></div>
+        <div class="dot" style="width:3px;height:3px;top:55%;left:15%;"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.3" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20%" y1="25%" x2="40%" y2="60%" stroke="#c8a96e" stroke-width="0.8"/>
+          <line x1="40%" y1="60%" x2="70%" y2="40%" stroke="#c8a96e" stroke-width="0.8"/>
+          <line x1="70%" y1="40%" x2="60%" y2="75%" stroke="#c8a96e" stroke-width="0.8"/>
+          <line x1="60%" y1="75%" x2="85%" y2="30%" stroke="#c8a96e" stroke-width="0.8"/>
+          <line x1="15%" y1="55%" x2="40%" y2="60%" stroke="#c8a96e" stroke-width="0.8"/>
+        </svg>
+      </div>
+      A
+    </div>
+    <div class="card-body">
+      <p class="card-tag">Option A</p>
+      <h3 class="card-title">Particle Network</h3>
+      <p class="card-desc">Animated neural-net canvas behind your name. Nodes drift and connect. Mouse interaction lights up nearby nodes.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <a href="/previews/option-b.html" class="card">
+    <div class="card-thumb b-thumb">
+      <span>Scott<br>Seidel</span>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">Option B</p>
+      <h3 class="card-title">Kinetic Scroll</h3>
+      <p class="card-desc">Gradient text hero with a typewriter cycling your titles. Every section animates in as you scroll down.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <a href="/previews/option-d.html" class="card">
+    <div class="card-thumb d-thumb">
+      <div style="text-align:left;padding:1.5rem;">
+        <div style="font-size:0.65rem;color:#4caf76;margin-bottom:0.5rem;">$ whoami</div>
+        <div style="font-size:0.7rem;color:#5a5448;">Role: <span style="color:#c8a96e;">Managing Director</span></div>
+        <div style="font-size:0.7rem;color:#5a5448;">PhD: <span style="color:#e8e2d9;">Chem. Eng.</span></div>
+        <div style="font-size:0.7rem;margin-top:0.4rem;color:#4caf76;">$ <span class="tcursor"></span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">Option D</p>
+      <h3 class="card-title">Terminal Pro</h3>
+      <p class="card-desc">Typewriter boot sequence renders your credentials like a terminal. Monospace + elegant serif mix. Timeline experience layout.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <a href="/previews/option-e.html" class="card">
+    <div class="card-thumb e-thumb">
+      <div class="e-strip">Managing Director · AI Data Programs · Scott Seidel · Soqono · &nbsp;&nbsp;&nbsp; Managing Director · AI Data Programs ·</div>
+      <span>Seidel</span>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">Option E</p>
+      <h3 class="card-title">Bold Editorial</h3>
+      <p class="card-desc">Magazine layout with scrolling gold marquee, giant serif headlines, numbered feature grid, and a pull quote section.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <a href="/previews/option-g.html" class="card">
+    <div class="card-thumb" style="background:#03050f; position:relative; overflow:hidden;">
+      <svg style="position:absolute;inset:0;width:100%;height:100%" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30%" cy="45%" r="4" fill="#c8a96e" opacity="0.9"/>
+        <circle cx="30%" cy="45%" r="14" fill="none" stroke="#c8a96e" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="58%" cy="30%" r="5" fill="#7ab8f5" opacity="0.9"/>
+        <circle cx="72%" cy="60%" r="3.5" fill="#a87af5" opacity="0.9"/>
+        <circle cx="45%" cy="70%" r="3" fill="#f57a7a" opacity="0.9"/>
+        <circle cx="20%" cy="68%" r="5.5" fill="#7af5c8" opacity="0.9"/>
+        <line x1="30%" y1="45%" x2="58%" y2="30%" stroke="#c8a96e" stroke-width="0.6" opacity="0.25" stroke-dasharray="3,5"/>
+        <line x1="58%" y1="30%" x2="72%" y2="60%" stroke="#7ab8f5" stroke-width="0.6" opacity="0.25" stroke-dasharray="3,5"/>
+        <line x1="30%" y1="45%" x2="45%" y2="70%" stroke="#c8a96e" stroke-width="0.6" opacity="0.25" stroke-dasharray="3,5"/>
+        <line x1="45%" y1="70%" x2="20%" y2="68%" stroke="#f57a7a" stroke-width="0.6" opacity="0.25" stroke-dasharray="3,5"/>
+        <line x1="30%" y1="45%" x2="20%" y2="68%" stroke="#c8a96e" stroke-width="0.6" opacity="0.2" stroke-dasharray="3,5"/>
+        <text x="30%" y="87%" text-anchor="middle" fill="#c8a96e" font-size="7" opacity="0.6" font-family="Inter,sans-serif" letter-spacing="1">AI DATA</text>
+        <text x="58%" y="22%" text-anchor="middle" fill="#7ab8f5" font-size="7" opacity="0.6" font-family="Inter,sans-serif" letter-spacing="1">AVs</text>
+        <text x="72%" y="75%" text-anchor="middle" fill="#a87af5" font-size="7" opacity="0.6" font-family="Inter,sans-serif" letter-spacing="1">AR/VR</text>
+        <text x="20%" y="82%" text-anchor="middle" fill="#7af5c8" font-size="7" opacity="0.6" font-family="Inter,sans-serif" letter-spacing="1">RESEARCH</text>
+        <!-- bg stars -->
+        <circle cx="15%" cy="20%" r="1" fill="white" opacity="0.2"/>
+        <circle cx="80%" cy="15%" r="1.5" fill="white" opacity="0.15"/>
+        <circle cx="90%" cy="40%" r="1" fill="white" opacity="0.2"/>
+        <circle cx="50%" cy="10%" r="1" fill="white" opacity="0.25"/>
+        <circle cx="65%" cy="80%" r="1.2" fill="white" opacity="0.15"/>
+        <circle cx="8%" cy="50%" r="1" fill="white" opacity="0.2"/>
+        <circle cx="85%" cy="72%" r="0.8" fill="white" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">Option G — Wild</p>
+      <h3 class="card-title">Constellation Career Map</h3>
+      <p class="card-desc">No pages — one interactive star map. Each career domain is a clickable star cluster. Click to zoom in and read. Built on Canvas.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <a href="/previews/option-i.html" class="card">
+    <div class="card-thumb" style="background:#0f0f0f; flex-direction:column; align-items:stretch; padding:0; font-size:1rem;">
+      <div style="background:#111;height:28px;border-bottom:1px solid #242424;display:flex;align-items:center;padding:0 0.75rem;gap:5px;">
+        <div style="width:9px;height:9px;border-radius:50%;background:#ff5f57"></div>
+        <div style="width:9px;height:9px;border-radius:50%;background:#febc2e"></div>
+        <div style="width:9px;height:9px;border-radius:50%;background:#28c840"></div>
+        <span style="font-size:0.58rem;color:#3a3428;margin-left:0.5rem;letter-spacing:0.04em;">Scott Seidel — Professional Profile</span>
+      </div>
+      <div style="padding:1rem 1.25rem;flex:1;position:relative;">
+        <div style="font-size:0.58rem;color:#3a3428;margin-bottom:0.5rem;letter-spacing:0.04em;">Workspace › Profiles › Scott Seidel</div>
+        <div style="font-size:1rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.02em;">Scott Seidel <span style="background:#1e1a10;border:1px solid #3a3020;color:#c8a96e;font-size:0.52rem;padding:0.08rem 0.3rem;border-radius:2px;font-weight:400;letter-spacing:0.04em;vertical-align:middle">Managing Director</span></div>
+        <div style="font-size:0.68rem;color:#4a4438;line-height:1.7;margin-bottom:0.5rem;">I am driven by tackling the most intriguing challenges in product...</div>
+        <!-- fake cursor -->
+        <div style="position:absolute;right:1.5rem;top:2.5rem;display:flex;flex-direction:column;align-items:flex-start;gap:2px;">
+          <div style="width:0;height:0;border-left:5px solid transparent;border-bottom:9px solid #7ab8f5;transform:rotate(-20deg)"></div>
+          <div style="background:#7ab8f5;color:#111;font-size:0.52rem;font-weight:700;padding:0.1rem 0.3rem;border-radius:2px;white-space:nowrap">Cruise Bot</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">Option I — Wild</p>
+      <h3 class="card-title">Living Document</h3>
+      <p class="card-desc">Your site looks like a live collaborative doc. Fake team members type in real time, comment bubbles appear on hover, cursors wander the page.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+</div>
+
+</body>
+</html>

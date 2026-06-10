@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option A2 — Morphing Blob</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg:#07070a; --accent:#c8a96e; --text:#ece8e0; --dim:#5a5448; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 58px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem;
+    background: rgba(7,7,10,0.8); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .logo { font-size: 1rem; font-weight: 600; color: var(--text); letter-spacing: 0.04em; text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--dim); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  .hero {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; position: relative; overflow: hidden;
+  }
+
+  /* BLOB SVG */
+  .blob-wrap {
+    position: absolute; inset: 0; display: flex;
+    align-items: center; justify-content: center; pointer-events: none;
+  }
+  .blob-svg { width: min(900px, 140vw); height: min(900px, 140vh); opacity: 0.55; }
+
+  .hero-content { position: relative; z-index: 2; }
+  .eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; opacity: 0.8; }
+  h1 { font-size: clamp(4rem, 11vw, 8rem); font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { font-size: 0.95rem; color: var(--dim); margin-top: 1.2rem; letter-spacing: 0.06em; }
+  .btn-row { margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; }
+  .btn { padding: 0.65rem 1.8rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 3px; text-decoration: none; transition: all 0.2s; }
+  .btn.solid { background: var(--accent); color: var(--bg); border: 1px solid var(--accent); }
+  .btn.solid:hover { background: #e0c080; }
+  .btn.outline { border: 1px solid rgba(255,255,255,0.12); color: var(--dim); }
+  .btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ABOUT */
+  .section { padding: 6rem 2.5rem; max-width: 1000px; margin: 0 auto; }
+  .sec-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .section h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 2rem; }
+  .about-grid { display: grid; grid-template-columns: 260px 1fr; gap: 3.5rem; align-items: start; }
+  .about-photo { width: 100%; aspect-ratio: 1; border-radius: 4px; border: 1px solid #1e1e22; background: #111; }
+  .about-text p { font-size: 0.95rem; color: var(--dim); line-height: 1.8; margin-bottom: 1.1rem; }
+  .about-text a { color: var(--accent); text-decoration: none; }
+
+  .preview-badge { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--accent); color: var(--bg); padding: 0.4rem 1rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 20px; z-index: 999; }
+  .back-bar { position: fixed; bottom: 1.5rem; left: 1.5rem; background: #111; border: 1px solid #1e1e1e; color: var(--dim); padding: 0.4rem 1rem; font-size: 0.7rem; letter-spacing: 0.08em; border-radius: 20px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .back-bar:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← All Previews</a>
+<div class="preview-badge">Option A2 — Blob</div>
+
+<nav>
+  <a href="#" class="logo">Scott Seidel</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">About</a></li>
+    <li><a href="#">Experience</a></li>
+    <li><a href="#">Musings</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="blob-wrap">
+    <svg class="blob-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c8a96e" stop-opacity="0.35"/>
+          <stop offset="40%" stop-color="#8b5cf6" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#07070a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="g2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#7ab8f5" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#07070a" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="blur1"><feGaussianBlur stdDeviation="40"/></filter>
+        <filter id="blur2"><feGaussianBlur stdDeviation="60"/></filter>
+      </defs>
+      <!-- Main blob -->
+      <path id="blob1" filter="url(#blur1)" fill="url(#g1)"/>
+      <!-- Secondary blob -->
+      <path id="blob2" filter="url(#blur2)" fill="url(#g2)"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <p class="eyebrow">Managing Director · AI Data Programs</p>
+    <h1>Scott<br><em>Seidel</em></h1>
+    <p class="sub">Ph.D. · 14 years leading global AI programs</p>
+    <div class="btn-row">
+      <a href="#about" class="btn solid">About me</a>
+      <a href="#" class="btn outline">Experience</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <p class="sec-label">Background</p>
+  <h2>About Me</h2>
+  <div class="about-grid">
+    <div class="about-photo"></div>
+    <div class="about-text">
+      <p>I am driven by tackling the most intriguing challenges in product development. With a Ph.D. in Chemical Engineering and over 14 years managing technical programs, I bring expertise across diverse domains.</p>
+      <p>Beginning in <a href="#">materials science research</a>, I pivoted to consulting for Big Tech clients, directing global-scale data programs critical to developing some of the leading AI technologies on the market today.</p>
+      <p>Currently Managing Director at <a href="#">Soqono</a>, designing and executing custom AI training data collection programs for leading technology companies worldwide.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+// Smooth blob morphing using simplex-like noise approximation
+function noise(x, y, t) {
+  return (
+    Math.sin(x * 2.3 + t * 0.8) * Math.cos(y * 1.7 + t * 0.6) +
+    Math.sin(x * 0.9 + y * 1.4 + t * 1.1) * 0.5 +
+    Math.cos(x * 3.1 - y * 0.8 + t * 0.4) * 0.3
+  );
+}
+
+function blobPath(cx, cy, baseR, points, t, noiseMult, offset) {
+  const pts = [];
+  for (let i = 0; i <= points; i++) {
+    const angle = (i / points) * Math.PI * 2;
+    const nx = Math.cos(angle + offset);
+    const ny = Math.sin(angle + offset);
+    const n = noise(nx, ny, t);
+    const r = baseR + n * noiseMult;
+    pts.push([cx + Math.cos(angle) * r, cy + Math.sin(angle) * r]);
+  }
+  // Smooth catmull-rom
+  let d = `M ${pts[0][0]},${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(0, i-1)];
+    const p1 = pts[i];
+    const p2 = pts[i+1];
+    const p3 = pts[Math.min(pts.length-1, i+2)];
+    const cp1x = p1[0] + (p2[0] - p0[0]) / 6;
+    const cp1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const cp2x = p2[0] - (p3[0] - p1[0]) / 6;
+    const cp2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2[0]},${p2[1]}`;
+  }
+  d += ' Z';
+  return d;
+}
+
+let t = 0;
+const blob1 = document.getElementById('blob1');
+const blob2 = document.getElementById('blob2');
+
+function animate() {
+  t += 0.006;
+  blob1.setAttribute('d', blobPath(400, 400, 260, 12, t, 70, 0));
+  blob2.setAttribute('d', blobPath(380, 420, 180, 10, t * 0.7, 90, Math.PI * 0.6));
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option E — Bold Editorial</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&family=Playfair+Display:ital,wght@0,900;1,400;1,900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #050505; --accent: #c8a96e; --text: #f0ece4; --dim: #5a5448;
+    --sans: 'Inter', system-ui, sans-serif;
+    --serif: 'Playfair Display', Georgia, serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; }
+
+  /* MARQUEE */
+  .marquee-bar {
+    background: var(--accent); color: #050505;
+    font-size: 0.68rem; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase;
+    height: 32px; display: flex; align-items: center; overflow: hidden; position: relative;
+  }
+  .marquee-inner {
+    display: flex; gap: 0; white-space: nowrap;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-inner span { padding: 0 2.5rem; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* NAV */
+  nav {
+    height: 60px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; border-bottom: 1px solid #151515;
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(5,5,5,0.96); backdrop-filter: blur(8px);
+  }
+  .logo { font-family: var(--serif); font-size: 1.1rem; font-weight: 900; color: var(--text); text-decoration: none; letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--dim); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  /* HERO */
+  .hero { padding: 5rem 2.5rem 4rem; border-bottom: 1px solid #151515; }
+  .hero-top {
+    display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .issue-info { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); }
+  .hero-headline {
+    font-family: var(--serif); font-size: clamp(4rem, 11vw, 9rem);
+    font-weight: 900; line-height: 0.88; letter-spacing: -0.02em;
+    color: var(--text); margin-bottom: 1.5rem;
+  }
+  .hero-headline em { font-style: italic; color: var(--accent); }
+  .hero-rule { display: flex; align-items: center; gap: 2rem; }
+  .rule-line { flex: 1; height: 1px; background: #2a2520; }
+  .hero-sub {
+    font-size: 1rem; color: var(--dim); line-height: 1.75; max-width: 540px; margin-bottom: 2rem;
+  }
+  .btn {
+    padding: 0.65rem 1.8rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: 2px; text-decoration: none; transition: all 0.2s; font-weight: 500;
+  }
+  .btn.solid { background: var(--accent); color: #050505; }
+  .btn.solid:hover { background: #e0c080; }
+  .btn.outline { border: 1px solid #2a2520; color: var(--dim); }
+  .btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* FEATURE GRID */
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid #151515; }
+  .feat-item { padding: 2.5rem; border-right: 1px solid #151515; position: relative; }
+  .feat-item:last-child { border-right: none; }
+  .feat-num {
+    font-family: var(--serif); font-size: 5rem; font-weight: 900; line-height: 1;
+    color: #111; position: absolute; top: 1.5rem; right: 1.5rem; letter-spacing: -0.05em;
+    user-select: none;
+  }
+  .feat-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .feat-item h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 900; margin-bottom: 0.75rem; line-height: 1.2; }
+  .feat-item p { font-size: 0.85rem; color: var(--dim); line-height: 1.7; }
+
+  /* PULL QUOTE */
+  .pull-quote { padding: 4rem 2.5rem; border-top: 1px solid #151515; border-bottom: 1px solid #151515; text-align: center; }
+  .pull-quote blockquote {
+    font-family: var(--serif); font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+    font-style: italic; font-weight: 400; line-height: 1.35;
+    color: var(--text); max-width: 780px; margin: 0 auto;
+  }
+  .pull-quote blockquote::before { content: '\201C'; color: var(--accent); font-size: 1.5em; line-height: 0; vertical-align: -0.4em; margin-right: 0.1em; }
+  .pull-quote blockquote::after  { content: '\201D'; color: var(--accent); font-size: 1.5em; line-height: 0; vertical-align: -0.4em; margin-left: 0.1em; }
+
+  /* MUSINGS STRIP */
+  .musings-strip { padding: 3rem 2.5rem; }
+  .strip-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+  .strip-header h2 { font-family: var(--serif); font-size: 1.8rem; font-weight: 900; }
+  .strip-header a { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+  .strip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5px; background: #151515; }
+  .strip-card { background: var(--bg); padding: 1.25rem; }
+  .strip-date { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+  .strip-card h4 { font-family: var(--serif); font-size: 0.95rem; font-weight: 900; line-height: 1.3; margin-bottom: 0.4rem; }
+  .strip-card p { font-size: 0.78rem; color: var(--dim); line-height: 1.6; }
+
+  .preview-badge {
+    position: fixed; bottom: 1.5rem; right: 1.5rem;
+    background: var(--accent); color: #050505; padding: 0.4rem 1rem;
+    font-size: 0.7rem; font-weight: 900; letter-spacing: 0.1em;
+    text-transform: uppercase; border-radius: 20px; z-index: 999;
+  }
+  .back-bar {
+    position: fixed; bottom: 1.5rem; left: 1.5rem;
+    background: #111; border: 1px solid #1e1e1e; color: var(--dim);
+    padding: 0.4rem 1rem; font-size: 0.7rem; letter-spacing: 0.08em;
+    border-radius: 20px; z-index: 999; text-decoration: none;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .back-bar:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<a href="/previews/" class="back-bar">← All Previews</a>
+<div class="preview-badge">Option E — Bold Editorial</div>
+
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    <span>Managing Director · AI Data Programs</span>
+    <span>·</span>
+    <span>Ph.D. Chemical Engineering</span>
+    <span>·</span>
+    <span>Autonomous Vehicles</span>
+    <span>·</span>
+    <span>AR/VR Data Collection</span>
+    <span>·</span>
+    <span>Global Programs</span>
+    <span>·</span>
+    <span>Soqono</span>
+    <span>·</span>
+    <span>Managing Director · AI Data Programs</span>
+    <span>·</span>
+    <span>Ph.D. Chemical Engineering</span>
+    <span>·</span>
+    <span>Autonomous Vehicles</span>
+    <span>·</span>
+    <span>AR/VR Data Collection</span>
+    <span>·</span>
+    <span>Global Programs</span>
+    <span>·</span>
+    <span>Soqono</span>
+    <span>·</span>
+  </div>
+</div>
+
+<nav>
+  <a href="#" class="logo">Scott Seidel</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">About</a></li>
+    <li><a href="#">Experience</a></li>
+    <li><a href="#">Musings</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-top">
+    <div>
+      <p class="issue-info">Managing Director · AI Data Programs · Based in California</p>
+    </div>
+  </div>
+  <div class="hero-headline">Scott<br><em>Seidel</em></div>
+  <div class="hero-rule">
+    <div class="rule-line"></div>
+    <a href="#" class="btn solid">View Experience</a>
+    <a href="#" class="btn outline">Read Musings</a>
+    <div class="rule-line"></div>
+  </div>
+  <p class="hero-sub" style="margin-top:2rem;">Ph.D. Chemical Engineering · 14 years leading global AI data programs across autonomous vehicles, AR/VR, biometrics, and materials science research.</p>
+</section>
+
+<div class="feature-grid">
+  <div class="feat-item">
+    <span class="feat-num">01</span>
+    <p class="feat-label">AI Data</p>
+    <h3>AI Training Data Collection</h3>
+    <p>Directing global programs serving AI, AR/VR, autonomous vehicles, biometrics, and computational photography.</p>
+  </div>
+  <div class="feat-item">
+    <span class="feat-num">02</span>
+    <p class="feat-label">Autonomy</p>
+    <h3>Autonomous Vehicles at Cruise</h3>
+    <p>Led VP-sponsored programs resolving bottlenecks during the scaling of autonomous vehicle technology.</p>
+  </div>
+  <div class="feat-item">
+    <span class="feat-num">03</span>
+    <p class="feat-label">Research</p>
+    <h3>12 Publications · 1 Patent</h3>
+    <p>Pioneered novel material processing methods across consumer electronics, biomedical, and aerospace domains.</p>
+  </div>
+</div>
+
+<div class="pull-quote">
+  <blockquote>Proactive leadership and clear decision-making frameworks empower teams to drive innovation and focus on their most significant value adds.</blockquote>
+</div>
+
+<div class="musings-strip">
+  <div class="strip-header">
+    <h2>Musings</h2>
+    <a href="#">All posts →</a>
+  </div>
+  <div class="strip-grid">
+    <div class="strip-card">
+      <p class="strip-date">Sep 10, 2024</p>
+      <h4>Simulation vs. Real-world Mileage Data</h4>
+      <p>Current efforts are falling short in translating virtual AV testing into real-world performance.</p>
+    </div>
+    <div class="strip-card">
+      <p class="strip-date">Aug 13, 2024</p>
+      <h4>Genetic Diversity and Model Collapse</h4>
+      <p>Surprising parallels between inbreeding in biology and data diversity in AI systems.</p>
+    </div>
+    <div class="strip-card">
+      <p class="strip-date">Jul 30, 2024</p>
+      <h4>The Energy Cost of LLMs</h4>
+      <p>Training GPT-3 consumes as much energy as 100 U.S. homes use in a year.</p>
+    </div>
+    <div class="strip-card">
+      <p class="strip-date">Jul 2, 2024</p>
+      <h4>Geographic Bias in LLMs</h4>
+      <p>50% higher error rates for sub-Saharan Africa data vs. North America across 20 models.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

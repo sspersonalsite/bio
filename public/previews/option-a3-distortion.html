@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option A3 — Grid Distortion</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg:#060608; --accent:#c8a96e; --text:#ece8e0; --dim:#5a5448; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 58px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem;
+    background: rgba(6,6,8,0.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .logo { font-size: 1rem; font-weight: 600; color: var(--text); letter-spacing: 0.04em; text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--dim); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  .hero {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; position: relative; overflow: hidden;
+  }
+
+  canvas#grid { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .hero-content { position: relative; z-index: 2; mix-blend-mode: normal; }
+  .eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; opacity: 0.8; }
+  h1 { font-size: clamp(4rem, 11vw, 8rem); font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { font-size: 0.95rem; color: var(--dim); margin-top: 1.2rem; letter-spacing: 0.06em; }
+  .btn-row { margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center; }
+  .btn { padding: 0.65rem 1.8rem; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 3px; text-decoration: none; transition: all 0.2s; }
+  .btn.solid { background: var(--accent); color: var(--bg); border: 1px solid var(--accent); }
+  .btn.solid:hover { background: #e0c080; }
+  .btn.outline { border: 1px solid rgba(255,255,255,0.1); color: var(--dim); }
+  .btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ABOUT */
+  .section { padding: 6rem 2.5rem; max-width: 1000px; margin: 0 auto; }
+  .sec-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .section h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 2rem; }
+  .about-grid { display: grid; grid-template-columns: 260px 1fr; gap: 3.5rem; align-items: start; }
+  .about-photo { width: 100%; aspect-ratio: 1; border-radius: 4px; border: 1px solid #1e1e22; background: #111; }
+  .about-text p { font-size: 0.95rem; color: var(--dim); line-height: 1.8; margin-bottom: 1.1rem; }
+  .about-text a { color: var(--accent); text-decoration: none; }
+
+  .preview-badge { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--accent); color: var(--bg); padding: 0.4rem 1rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 20px; z-index: 999; }
+  .back-bar { position: fixed; bottom: 1.5rem; left: 1.5rem; background: #111; border: 1px solid #1e1e1e; color: var(--dim); padding: 0.4rem 1rem; font-size: 0.7rem; letter-spacing: 0.08em; border-radius: 20px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .back-bar:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← All Previews</a>
+<div class="preview-badge">Option A3 — Grid Distortion</div>
+
+<nav>
+  <a href="#" class="logo">Scott Seidel</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">About</a></li>
+    <li><a href="#">Experience</a></li>
+    <li><a href="#">Musings</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <canvas id="grid"></canvas>
+  <div class="hero-content">
+    <p class="eyebrow">Managing Director · AI Data Programs</p>
+    <h1>Scott<br><em>Seidel</em></h1>
+    <p class="sub">Ph.D. · 14 years leading global AI programs</p>
+    <div class="btn-row">
+      <a href="#about" class="btn solid">About me</a>
+      <a href="#" class="btn outline">Experience</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <p class="sec-label">Background</p>
+  <h2>About Me</h2>
+  <div class="about-grid">
+    <div class="about-photo"></div>
+    <div class="about-text">
+      <p>I am driven by tackling the most intriguing challenges in product development. With a Ph.D. in Chemical Engineering and over 14 years managing technical programs, I bring expertise across diverse domains.</p>
+      <p>Beginning in <a href="#">materials science research</a>, I pivoted to consulting for Big Tech clients, directing global-scale data programs critical to developing some of the leading AI technologies on the market today.</p>
+      <p>Currently Managing Director at <a href="#">Soqono</a>, designing and executing custom AI training data collection programs for leading technology companies worldwide.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const canvas = document.getElementById('grid');
+const ctx = canvas.getContext('2d');
+let W, H, mouse = { x: -9999, y: -9999 }, targetMouse = { x: -9999, y: -9999 };
+
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+
+const SPACING = 38;
+let t = 0;
+
+function noise(x, y, time) {
+  return (
+    Math.sin(x * 0.8 + time * 0.5) * Math.cos(y * 0.6 + time * 0.4) * 0.5 +
+    Math.sin(x * 0.3 + y * 0.5 + time * 0.3) * 0.3 +
+    Math.cos(x * 1.2 - y * 0.9 + time * 0.7) * 0.2
+  );
+}
+
+function draw() {
+  t += 0.012;
+
+  // Smooth mouse
+  mouse.x += (targetMouse.x - mouse.x) * 0.06;
+  mouse.y += (targetMouse.y - mouse.y) * 0.06;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#060608';
+  ctx.fillRect(0, 0, W, H);
+
+  const cols = Math.ceil(W / SPACING) + 2;
+  const rows = Math.ceil(H / SPACING) + 2;
+
+  for (let col = -1; col < cols; col++) {
+    for (let row = -1; row < rows; row++) {
+      const bx = col * SPACING;
+      const by = row * SPACING;
+
+      // Wave distortion
+      const n = noise(col * 0.4, row * 0.4, t);
+      const dx = n * 14;
+      const dy = noise(col * 0.4 + 100, row * 0.4 + 100, t) * 14;
+
+      // Mouse repulsion
+      const mx = bx - mouse.x, my = by - mouse.y;
+      const md = Math.sqrt(mx * mx + my * my);
+      const repelR = 140;
+      let rx = 0, ry = 0;
+      if (md < repelR && md > 0) {
+        const force = (1 - md / repelR) * 30;
+        rx = (mx / md) * force;
+        ry = (my / md) * force;
+      }
+
+      const px = bx + dx + rx;
+      const py = by + dy + ry;
+
+      // Color based on distortion magnitude
+      const dist = Math.sqrt((dx+rx)*(dx+rx) + (dy+ry)*(dy+ry));
+      const glow = Math.min(1, dist / 35);
+
+      // Dot
+      ctx.beginPath();
+      ctx.arc(px, py, 1.2 + glow * 1.8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${lerp(80, 200, glow)},${lerp(74, 169, glow)},${lerp(100, 110, glow)},${0.25 + glow * 0.55})`;
+      ctx.fill();
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+
+function lerp(a, b, t) { return a + (b - a) * Math.min(1, Math.max(0, t)); }
+
+window.addEventListener('resize', resize);
+window.addEventListener('mousemove', e => { targetMouse.x = e.clientX; targetMouse.y = e.clientY; });
+window.addEventListener('touchmove', e => {
+  targetMouse.x = e.touches[0].clientX;
+  targetMouse.y = e.touches[0].clientY;
+});
+
+resize(); draw();
+</script>
+</body>
+</html>

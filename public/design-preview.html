@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@400;700&family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #111; font-family: Inter, sans-serif; padding: 40px 20px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1100px; margin: 0 auto; }
+.card { border-radius: 12px; overflow: hidden; border: 1px solid #222; cursor: pointer; transition: border-color .2s; }
+.card:hover { border-color: #4A9EDB; }
+.label { background: #1a1a1a; color: #666; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 10px 16px; border-top: 1px solid #222; }
+
+/* ── Option 1: Centered + serif name ── */
+.opt1 { background: #0a0a0a; padding: 40px 32px 32px; min-height: 280px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.opt1 img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 2px solid #1e3a50; }
+.opt1 h1 { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: #f0ece5; letter-spacing: -.02em; line-height: 1; margin-bottom: 6px; }
+.opt1 h1 span { color: #4A9EDB; }
+.opt1 .role { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #5b8fb0; margin: 12px 0 20px; }
+.opt1 .bio { font-size: 13px; color: #888; line-height: 1.7; max-width: 340px; }
+
+/* ── Option 2: Left sidebar photo ── */
+.opt2 { background: #0a0a0a; display: flex; min-height: 280px; }
+.opt2-side { width: 120px; flex-shrink: 0; background: #0d1a24; display: flex; flex-direction: column; align-items: center; padding: 32px 16px; gap: 16px; }
+.opt2-side img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+.opt2-side .vert { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: #3a6a8a; writing-mode: vertical-rl; transform: rotate(180deg); margin-top: 8px; }
+.opt2-main { padding: 40px 28px; flex: 1; }
+.opt2-main h1 { font-family: 'Space Grotesk', sans-serif; font-size: 38px; font-weight: 700; color: #f0ece5; line-height: 1; letter-spacing: -.03em; margin-bottom: 8px; }
+.opt2-main h1 em { color: #4A9EDB; font-style: normal; }
+.opt2-main .role { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #5b8fb0; margin-bottom: 20px; }
+.opt2-main .bio { font-size: 13px; color: #aaa; line-height: 1.7; }
+
+/* ── Option 3: Full-bleed hero strip ── */
+.opt3 { background: #0a0a0a; min-height: 280px; }
+.opt3-hero { position: relative; height: 160px; overflow: hidden; }
+.opt3-hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; filter: brightness(.35) saturate(.6); }
+.opt3-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,10,10,.9) 0%, rgba(10,10,10,.3) 100%); display: flex; align-items: flex-end; padding: 20px 28px; }
+.opt3-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: #fff; letter-spacing: -.02em; line-height: 1; }
+.opt3-hero h1 span { color: #4A9EDB; }
+.opt3-body { padding: 20px 28px 28px; }
+.opt3-body .role { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #5b8fb0; margin-bottom: 12px; }
+.opt3-body .bio { font-size: 13px; color: #aaa; line-height: 1.7; }
+
+/* ── Option 4: High-contrast minimal ── */
+.opt4 { background: #050505; padding: 36px 32px 32px; min-height: 280px; border-left: 3px solid #4A9EDB; }
+.opt4-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.opt4 h1 { font-family: Inter, sans-serif; font-size: 44px; font-weight: 900; color: #fff; letter-spacing: -.04em; line-height: .95; text-transform: uppercase; }
+.opt4 h1 span { color: #4A9EDB; }
+.opt4-top img { width: 52px; height: 52px; border-radius: 4px; object-fit: cover; filter: grayscale(.4); }
+.opt4 .rule { height: 1px; background: #1a1a1a; margin-bottom: 16px; }
+.opt4 .role { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #4A9EDB; margin-bottom: 10px; }
+.opt4 .bio { font-size: 13px; color: #777; line-height: 1.7; }
+
+/* ── Option 5: Warm editorial ── */
+.opt5 { background: #0c0b09; padding: 36px 32px 32px; min-height: 280px; }
+.opt5-header { display: flex; gap: 20px; align-items: center; margin-bottom: 24px; }
+.opt5-header img { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; }
+.opt5-header-text h1 { font-family: 'DM Serif Display', serif; font-size: 36px; color: #f0ece5; line-height: 1.05; }
+.opt5-header-text h1 span { color: #c8855a; }
+.opt5-header-text .role { font-size: 11px; color: #7a6e60; letter-spacing: .1em; text-transform: uppercase; margin-top: 6px; }
+.opt5 .divider { height: 1px; background: linear-gradient(to right, #c8855a44, transparent); margin-bottom: 16px; }
+.opt5 .bio { font-size: 13px; color: #a09880; line-height: 1.75; }
+.opt5 .bio strong { color: #c8855a; font-weight: 500; }
+
+h2.section-title { color: #555; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 400; margin-bottom: 20px; margin-top: 0; font-family: Inter, sans-serif; }
+</style>
+</head>
+<body>
+
+<div style="max-width:1100px;margin:0 auto 28px;display:flex;align-items:center;gap:12px">
+  <span style="color:#444;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-family:Inter,sans-serif">5 Design Directions — click a card to highlight</span>
+</div>
+
+<div class="grid">
+
+  <!-- 1 -->
+  <div class="card">
+    <div class="opt1">
+      <img src="/media/pic01.jpg" alt=""/>
+      <h1>Scott <span>Seidel</span></h1>
+      <div class="role">Managing Director · Technical Research Operations · Ph.D.</div>
+      <p class="bio">Bridging deep-tech research and global commercial scaling across consumer electronics, autonomous vehicles, AR/VR, and frontier AI.</p>
+    </div>
+    <div class="label">1 — Centered serif · elegant & symmetrical</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <div class="opt2">
+      <div class="opt2-side">
+        <img src="/media/pic01.jpg" alt=""/>
+        <span class="vert">Scott Seidel</span>
+      </div>
+      <div class="opt2-main">
+        <h1>Scott<br/><em>Seidel</em></h1>
+        <div class="role">Managing Director · Engineering Ph.D.</div>
+        <p class="bio">Bridging deep-tech research and global commercial scaling across consumer electronics, autonomous vehicles, AR/VR, and frontier AI.</p>
+      </div>
+    </div>
+    <div class="label">2 — Side panel · editorial structure</div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <div class="opt3">
+      <div class="opt3-hero">
+        <img src="/media/bg.jpg" alt=""/>
+        <div class="opt3-hero-overlay">
+          <h1>Scott <span>Seidel</span></h1>
+        </div>
+      </div>
+      <div class="opt3-body">
+        <div class="role">Managing Director · Technical Research Operations · Engineering Ph.D.</div>
+        <p class="bio">Bridging deep-tech research and global commercial scaling across consumer electronics, autonomous vehicles, AR/VR, and frontier AI.</p>
+      </div>
+    </div>
+    <div class="label">3 — Full-bleed hero image · cinematic</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <div class="opt4">
+      <div class="opt4-top">
+        <h1>Scott<br/><span>Seidel</span></h1>
+        <img src="/media/pic01.jpg" alt=""/>
+      </div>
+      <div class="rule"></div>
+      <div class="role">Managing Director · Technical Research Operations · Engineering Ph.D.</div>
+      <p class="bio">Bridging deep-tech research and global commercial scaling across consumer electronics, autonomous vehicles, AR/VR, and frontier AI.</p>
+    </div>
+    <div class="label">4 — Bold brutalist · high contrast</div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card" style="grid-column: 1 / -1; max-width: 540px;">
+    <div class="opt5">
+      <div class="opt5-header">
+        <img src="/media/pic01.jpg" alt=""/>
+        <div class="opt5-header-text">
+          <h1>Scott <span>Seidel</span></h1>
+          <div class="role">Managing Director · Engineering Ph.D.</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <p class="bio">Bridging deep-tech research and global commercial scaling. Backed by a Ph.D. in Chemical Engineering and 15 years of technical leadership across <strong>consumer electronics</strong>, <strong>autonomous vehicles</strong>, <strong>AR/VR</strong>, and <strong>frontier AI</strong>.</p>
+    </div>
+    <div class="label">5 — Warm editorial · amber accent · human feel</div>
+  </div>
+
+</div>
+</body>
+</html>

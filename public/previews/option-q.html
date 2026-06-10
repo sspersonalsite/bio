@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option Q — Radar / Sonar</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg:#020d06; --radar:#00ff41; --dim-green:#0a3018; --text:#c8f0d0; --accent:#c8a96e; --dim:#1a5030; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
+
+  /* SCANLINES OVERLAY */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+  }
+
+  /* NOISE */
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 52px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 2rem;
+    background: rgba(2,13,6,0.85); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0,255,65,0.08);
+  }
+  .logo { font-family: monospace; font-size: 0.85rem; color: var(--radar); letter-spacing: 0.08em; }
+  .logo::before { content: '['; opacity: 0.4; } .logo::after { content: ']'; opacity: 0.4; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--dim); font-family: monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--radar); }
+  .nav-status { font-family: monospace; font-size: 0.65rem; color: var(--dim); display: flex; align-items: center; gap: 0.5rem; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--radar); animation: blink 1.8s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* HERO — RADAR */
+  .hero { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+
+  .radar-wrap {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 2.5rem;
+  }
+
+  canvas#radar { display: block; }
+
+  .hero-text { text-align: center; position: relative; z-index: 2; }
+  .radar-label { font-family: monospace; font-size: 0.62rem; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; margin-bottom: 0.75rem; }
+  h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: var(--text); }
+  h1 span { color: var(--radar); text-shadow: 0 0 20px rgba(0,255,65,0.5); }
+  .ping-text {
+    font-family: monospace; font-size: 0.72rem; color: var(--dim); letter-spacing: 0.1em;
+    margin-top: 0.75rem; height: 1.2em; overflow: hidden;
+  }
+  .btn-row { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
+  .btn { padding: 0.55rem 1.6rem; font-family: monospace; font-size: 0.75rem; letter-spacing: 0.08em; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+  .btn.solid { background: rgba(0,255,65,0.1); border: 1px solid var(--radar); color: var(--radar); }
+  .btn.solid:hover { background: rgba(0,255,65,0.2); box-shadow: 0 0 12px rgba(0,255,65,0.3); }
+  .btn.outline { border: 1px solid var(--dim); color: var(--dim); }
+  .btn.outline:hover { border-color: var(--radar); color: var(--radar); }
+
+  /* DATA READOUT (top right) */
+  .readout {
+    position: fixed; top: 70px; right: 1.5rem; z-index: 50;
+    font-family: monospace; font-size: 0.62rem; color: var(--dim);
+    line-height: 2; letter-spacing: 0.06em;
+    background: rgba(2,13,6,0.7); border: 1px solid rgba(0,255,65,0.06);
+    padding: 0.75rem 1rem; border-radius: 3px;
+  }
+  .readout-key { color: rgba(0,255,65,0.4); display: inline-block; min-width: 80px; }
+  .readout-val { color: var(--text); }
+
+  /* BELOW FOLD */
+  .section { position: relative; z-index: 1; padding: 5rem 2.5rem; max-width: 960px; margin: 0 auto; }
+  .sec-tag { font-family: monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--radar); margin-bottom: 0.5rem; opacity: 0.7; }
+  .section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 2rem; }
+  .ping-card {
+    border: 1px solid rgba(0,255,65,0.08); border-radius: 4px; padding: 1.5rem;
+    background: rgba(0,255,65,0.02); margin-bottom: 1rem;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .ping-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: var(--radar); opacity: 0.4;
+  }
+  .ping-card:hover { border-color: rgba(0,255,65,0.25); background: rgba(0,255,65,0.04); }
+  .ping-card h3 { font-size: 1rem; margin-bottom: 0.4rem; color: var(--text); }
+  .ping-card p { font-size: 0.84rem; color: var(--dim); line-height: 1.7; }
+  .ping-card .card-meta { font-family: monospace; font-size: 0.62rem; color: rgba(0,255,65,0.4); margin-bottom: 0.5rem; letter-spacing: 0.06em; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1rem; }
+
+  .preview-badge { position: fixed; bottom: 1.5rem; right: 1.5rem; background: rgba(0,255,65,0.15); border: 1px solid var(--radar); color: var(--radar); padding: 0.4rem 1rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; font-family: monospace; text-transform: uppercase; border-radius: 3px; z-index: 999; }
+  .back-bar { position: fixed; bottom: 1.5rem; left: 1.5rem; background: rgba(2,13,6,0.9); border: 1px solid rgba(0,255,65,0.1); color: var(--dim); padding: 0.4rem 1rem; font-size: 0.68rem; letter-spacing: 0.08em; font-family: monospace; border-radius: 3px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .back-bar:hover { color: var(--radar); }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← ALL_PREVIEWS</a>
+<div class="preview-badge">OPTION_Q // RADAR</div>
+
+<div class="readout">
+  <div><span class="readout-key">OPERATOR</span><span class="readout-val">S. SEIDEL</span></div>
+  <div><span class="readout-key">STATUS</span><span class="readout-val" id="ro-status">SCANNING</span></div>
+  <div><span class="readout-key">DOMAIN</span><span class="readout-val">AI DATA OPS</span></div>
+  <div><span class="readout-key">RANGE</span><span class="readout-val">GLOBAL</span></div>
+  <div><span class="readout-key">CONTACTS</span><span class="readout-val" id="ro-contacts">0</span></div>
+</div>
+
+<nav>
+  <span class="logo">scott_seidel</span>
+  <ul class="nav-links">
+    <li><a href="#" class="active">ABOUT</a></li>
+    <li><a href="#">EXPERIENCE</a></li>
+    <li><a href="#">MUSINGS</a></li>
+  </ul>
+  <div class="nav-status"><div class="status-dot"></div>LIVE · SYS_OK</div>
+</nav>
+
+<section class="hero">
+  <div class="radar-wrap">
+    <canvas id="radar" width="320" height="320"></canvas>
+    <div class="hero-text">
+      <div class="radar-label">Target acquired // Profile loaded</div>
+      <h1>Scott<br><span>Seidel</span></h1>
+      <div class="ping-text" id="pingText"></div>
+      <div class="btn-row">
+        <a href="#exp" class="btn solid">SCAN_EXPERIENCE</a>
+        <a href="#musings" class="btn outline">READ_MUSINGS</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="exp">
+  <p class="sec-tag">// EXPERIENCE CONTACTS</p>
+  <h2>Experience</h2>
+  <div class="card-grid">
+    <div class="ping-card"><div class="card-meta">CONTACT_01 · AI_DATA · 2022–PRESENT</div><h3>AI Training Data Collection</h3><p>Directing global programs at Soqono across AR/VR, autonomous vehicles, biometrics, and computational photography.</p></div>
+    <div class="ping-card"><div class="card-meta">CONTACT_02 · AUTONOMY · 2019–2022</div><h3>Autonomous Vehicles</h3><p>VP-sponsored programs at Cruise resolving critical bottlenecks in AV commercialization and scaling.</p></div>
+    <div class="ping-card"><div class="card-meta">CONTACT_03 · AR_VR · 2016–2020</div><h3>AR/VR Development</h3><p>Data collection and hardware validation for SLAM, eye tracking, and emotion classification algorithms.</p></div>
+    <div class="ping-card"><div class="card-meta">CONTACT_04 · RESEARCH · 2009–2014</div><h3>Materials Science</h3><p>12 publications · 1 patent. Novel processing methods for aerospace, biomedical, and consumer electronics.</p></div>
+  </div>
+</section>
+
+<script>
+const canvas = document.getElementById('radar');
+const ctx = canvas.getContext('2d');
+const CX = 160, CY = 160, R = 145;
+let angle = 0;
+const GREEN = '#00ff41';
+
+// Contacts (blips)
+const contacts = [
+  { a: 0.8, r: 0.55, label: 'AI DATA', born: -1 },
+  { a: 2.1, r: 0.72, label: 'AV', born: -1 },
+  { a: 3.5, r: 0.45, label: 'AR/VR', born: -1 },
+  { a: 4.8, r: 0.65, label: 'RESEARCH', born: -1 },
+  { a: 1.4, r: 0.88, label: 'BIOMETRICS', born: -1 },
+];
+let sweepCount = 0, contactsFound = 0;
+
+const pingTexts = [
+  'Managing Director · AI Data Programs',
+  'Ph.D. Chemical Engineering',
+  '14 years · Global programs',
+  '5 continents · Active',
+  'Soqono · Cruise · Big Tech',
+];
+let pingIdx = 0;
+const pingEl = document.getElementById('pingText');
+
+function drawRadar() {
+  ctx.clearRect(0, 0, 320, 320);
+
+  // Background
+  ctx.fillStyle = '#020d06';
+  ctx.beginPath(); ctx.arc(CX, CY, R+2, 0, Math.PI*2); ctx.fill();
+
+  // Grid rings
+  for (let i = 1; i <= 4; i++) {
+    ctx.beginPath();
+    ctx.arc(CX, CY, R * i/4, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(0,255,65,${0.06 + (i===4?0.04:0)})`;
+    ctx.lineWidth = i === 4 ? 1.5 : 0.7;
+    ctx.stroke();
+  }
+
+  // Cross hairs
+  ctx.strokeStyle = 'rgba(0,255,65,0.07)';
+  ctx.lineWidth = 0.6;
+  ctx.setLineDash([4, 8]);
+  ctx.beginPath(); ctx.moveTo(CX-R, CY); ctx.lineTo(CX+R, CY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(CX, CY-R); ctx.lineTo(CX, CY+R); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Sweep trail
+  const trailCount = 60;
+  for (let i = 0; i < trailCount; i++) {
+    const a = angle - (i / trailCount) * Math.PI * 0.6;
+    const opacity = (1 - i/trailCount) * 0.18;
+    const grad = ctx.createConicalGradient ? null : null;
+    ctx.beginPath();
+    ctx.moveTo(CX, CY);
+    ctx.arc(CX, CY, R, a, a + 0.04);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(0,255,65,${opacity})`;
+    ctx.fill();
+  }
+
+  // Sweep line
+  ctx.beginPath();
+  ctx.moveTo(CX, CY);
+  ctx.lineTo(CX + Math.cos(angle) * R, CY + Math.sin(angle) * R);
+  ctx.strokeStyle = `rgba(0,255,65,0.85)`;
+  ctx.lineWidth = 1.5;
+  ctx.shadowColor = GREEN; ctx.shadowBlur = 8;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Contacts
+  for (const c of contacts) {
+    if (c.born < 0) continue;
+    const age = (angle - c.born + Math.PI*20) % (Math.PI*2);
+    const fade = Math.max(0, 1 - age / (Math.PI * 1.2));
+    if (fade < 0.01) continue;
+
+    const cx2 = CX + Math.cos(c.a) * c.r * R;
+    const cy2 = CY + Math.sin(c.a) * c.r * R;
+
+    // Blip glow
+    ctx.beginPath();
+    ctx.arc(cx2, cy2, 6 + (1-fade)*4, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(0,255,65,${fade * 0.15})`;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(cx2, cy2, 3, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(0,255,65,${fade * 0.9})`;
+    ctx.shadowColor = GREEN; ctx.shadowBlur = 10;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Label
+    if (fade > 0.3) {
+      ctx.font = '500 8px Inter, monospace';
+      ctx.fillStyle = `rgba(0,255,65,${fade * 0.7})`;
+      ctx.textAlign = 'left';
+      ctx.fillText(c.label, cx2 + 6, cy2 - 5);
+    }
+  }
+
+  // Outer ring
+  ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI*2);
+  ctx.strokeStyle = 'rgba(0,255,65,0.2)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Center dot
+  ctx.beginPath(); ctx.arc(CX, CY, 3, 0, Math.PI*2);
+  ctx.fillStyle = GREEN; ctx.fill();
+
+  // Tick marks
+  for (let i = 0; i < 36; i++) {
+    const a = (i / 36) * Math.PI * 2;
+    const inner = i % 9 === 0 ? R - 12 : R - 6;
+    ctx.beginPath();
+    ctx.moveTo(CX + Math.cos(a)*inner, CY + Math.sin(a)*inner);
+    ctx.lineTo(CX + Math.cos(a)*R, CY + Math.sin(a)*R);
+    ctx.strokeStyle = `rgba(0,255,65,${i%9===0?0.25:0.1})`;
+    ctx.lineWidth = i%9===0 ? 1 : 0.5;
+    ctx.stroke();
+  }
+
+  angle += 0.025;
+  if (angle > Math.PI * 2) { angle -= Math.PI*2; sweepCount++; }
+
+  // Reveal contacts as sweep passes
+  for (const c of contacts) {
+    const diff = (angle - c.a + Math.PI*2) % (Math.PI*2);
+    if (diff < 0.05) {
+      if (c.born < 0 || (sweepCount > 0 && diff < 0.05)) {
+        c.born = angle;
+        if (contactsFound < contacts.length) {
+          contactsFound++;
+          document.getElementById('ro-contacts').textContent = contactsFound;
+        }
+      }
+    }
+  }
+
+  // Cycle ping text
+  if (Math.round(angle * 10) % 63 === 0) {
+    pingEl.style.opacity = 0;
+    setTimeout(() => {
+      pingIdx = (pingIdx + 1) % pingTexts.length;
+      pingEl.textContent = '> ' + pingTexts[pingIdx];
+      pingEl.style.opacity = 1;
+      pingEl.style.transition = 'opacity 0.5s';
+    }, 300);
+  }
+
+  requestAnimationFrame(drawRadar);
+}
+
+pingEl.textContent = '> ' + pingTexts[0];
+drawRadar();
+</script>
+</body>
+</html>

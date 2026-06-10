@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option O — Scrolling Ticker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg:#080808; --accent:#c8a96e; --text:#e4dfd6; --dim:#4a4440; --border:#161616; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; }
+
+  /* FIXED LEFT RAIL */
+  .left-rail {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+    border-right: 1px solid var(--border); padding: 2rem 1.5rem;
+    display: flex; flex-direction: column; z-index: 100;
+    background: var(--bg);
+  }
+  .rail-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .rail-title { font-size: 0.72rem; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 2.5rem; }
+  .rail-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+  .rail-link { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.5rem; border-radius: 4px; color: var(--dim); font-size: 0.78rem; text-decoration: none; transition: all 0.15s; cursor: pointer; }
+  .rail-link:hover, .rail-link.active { color: var(--text); background: rgba(255,255,255,0.04); }
+  .rail-link.active { color: var(--accent); }
+  .rail-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .rail-spacer { flex: 1; }
+  .rail-footer { font-size: 0.65rem; color: var(--dim); letter-spacing: 0.06em; line-height: 1.6; }
+  .rail-filter { margin: 1.5rem 0 0.75rem; }
+  .rail-filter-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.5rem; }
+  .filter-tag { display: inline-block; padding: 0.2rem 0.55rem; border: 1px solid var(--border); border-radius: 20px; font-size: 0.62rem; color: var(--dim); margin: 0.2rem 0.2rem 0 0; cursor: pointer; transition: all 0.15s; }
+  .filter-tag:hover, .filter-tag.on { border-color: var(--accent); color: var(--accent); }
+
+  /* MAIN FEED */
+  .feed { margin-left: 240px; max-width: 700px; }
+
+  /* FEED ITEM */
+  .feed-item {
+    border-bottom: 1px solid var(--border); padding: 2.5rem 2rem;
+    position: relative; transition: background 0.15s;
+  }
+  .feed-item:hover { background: rgba(255,255,255,0.015); }
+  .feed-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
+  .feed-tag { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 20px; border: 1px solid; }
+  .tag-bio-item { border-color: rgba(200,169,110,0.4); color: var(--accent); }
+  .tag-exp { border-color: rgba(122,184,245,0.4); color: #7ab8f5; }
+  .tag-musing { border-color: rgba(168,122,245,0.4); color: #a87af5; }
+  .tag-research { border-color: rgba(122,245,200,0.4); color: #7af5c8; }
+  .feed-date { font-size: 0.68rem; color: var(--dim); }
+  .feed-item h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.75rem; }
+  .feed-item h2 a { color: var(--text); text-decoration: none; }
+  .feed-item h2 a:hover { color: var(--accent); }
+  .feed-item p { font-size: 0.88rem; color: var(--dim); line-height: 1.75; }
+  .feed-item p a { color: var(--accent); text-decoration: none; }
+  .feed-cta { margin-top: 1rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); text-decoration: none; display: inline-block; }
+  .feed-cta:hover { opacity: 0.7; }
+
+  /* HERO ITEM (first) */
+  .feed-hero { padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
+  .feed-hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .feed-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 1.5rem; }
+  .feed-hero p { font-size: 1rem; color: var(--dim); line-height: 1.8; max-width: 540px; }
+  .hero-btns { display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .btn { padding: 0.5rem 1.4rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 3px; text-decoration: none; transition: all 0.2s; }
+  .btn.solid { background: var(--accent); color: #080808; }
+  .btn.solid:hover { background: #e0c080; }
+  .btn.outline { border: 1px solid var(--border); color: var(--dim); }
+  .btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* DIVIDER LABEL */
+  .feed-section-label {
+    padding: 1rem 2rem 0.5rem; font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--dim);
+    border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem;
+  }
+  .feed-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .preview-badge { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--accent); color: #080808; padding: 0.4rem 1rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 20px; z-index: 999; }
+  .back-bar { position: fixed; bottom: 1.5rem; left: 255px; background: #111; border: 1px solid var(--border); color: var(--dim); padding: 0.4rem 1rem; font-size: 0.7rem; letter-spacing: 0.08em; border-radius: 20px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .back-bar:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← All Previews</a>
+<div class="preview-badge">Option O — Ticker Tape</div>
+
+<div class="left-rail">
+  <div class="rail-name">Scott Seidel</div>
+  <div class="rail-title">Managing Director · AI Data</div>
+  <nav class="rail-nav">
+    <a class="rail-link active"><span class="rail-dot"></span> All</a>
+    <a class="rail-link"><span class="rail-dot"></span> About</a>
+    <a class="rail-link"><span class="rail-dot"></span> Experience</a>
+    <a class="rail-link"><span class="rail-dot"></span> Musings</a>
+  </nav>
+  <div class="rail-filter">
+    <div class="rail-filter-label">Filter by</div>
+    <span class="filter-tag on">All</span>
+    <span class="filter-tag">AI</span>
+    <span class="filter-tag">AV</span>
+    <span class="filter-tag">Research</span>
+    <span class="filter-tag">Writing</span>
+  </div>
+  <div class="rail-spacer"></div>
+  <div class="rail-footer">
+    Ph.D. Chemical Engineering<br>
+    Based in California<br>
+    <a href="https://www.linkedin.com/in/scott-seidel" style="color:var(--accent);text-decoration:none">LinkedIn →</a>
+  </div>
+</div>
+
+<main class="feed">
+  <div class="feed-hero">
+    <p class="feed-hero-eyebrow">Managing Director · AI Data Programs</p>
+    <h1>Scott Seidel</h1>
+    <p>Ph.D. Chemical Engineering · 14 years leading global technical programs across AI data, autonomous vehicles, AR/VR, biometrics, and materials science research.</p>
+    <div class="hero-btns">
+      <a href="#exp" class="btn solid">Experience</a>
+      <a href="#musings" class="btn outline">Musings</a>
+    </div>
+  </div>
+
+  <div class="feed-section-label">About</div>
+
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-bio-item">Bio</span></div>
+    <p>Beginning my career in <a href="#">materials science research</a>, I discovered my passion for innovative tech products during my tenure as a failure analysis engineer. I pivoted to consulting for Big Tech clients, directing global-scale data programs critical to developing some of the leading AI technologies on the market today.</p>
+  </div>
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-bio-item">Now</span></div>
+    <p>Currently Managing Director at <a href="https://www.soqono.com">Soqono</a>, where I work with leading technology companies to design and execute custom AI training data collection programs across AR/VR, autonomous vehicles, biometrics, and computational photography.</p>
+  </div>
+
+  <div class="feed-section-label" id="exp">Experience</div>
+
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-exp">AI Data</span><span class="feed-date">2022 — Present</span></div>
+    <h2>AI Training Data Collection · Soqono</h2>
+    <p>Directing global AI training data collection programs for leading technology companies worldwide.</p>
+  </div>
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-exp">Autonomy</span><span class="feed-date">2019 — 2022</span></div>
+    <h2>Autonomous Vehicles · Cruise</h2>
+    <p>Led VP-sponsored programs critical to mitigating risks during the scaling of autonomous vehicle technology.</p>
+  </div>
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-exp">AR/VR</span><span class="feed-date">2016 — 2020</span></div>
+    <h2>AR/VR Development · Big Tech</h2>
+    <p>Led data collection and hardware validation studies for next-generation AR/VR products.</p>
+  </div>
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-research">Research</span><span class="feed-date">2009 — 2014</span></div>
+    <h2>Materials Science · Ph.D.</h2>
+    <p>12 peer-reviewed publications and 1 patent pioneering novel material processing methods for consumer electronics, biomedical, and aerospace applications.</p>
+  </div>
+
+  <div class="feed-section-label" id="musings">Musings</div>
+
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-musing">Post</span><span class="feed-date">Sep 10, 2024</span></div>
+    <h2><a href="/musings/avs002">The Gap Between Simulation and Real-world Mileage Data</a></h2>
+    <p>Simulation data offers a fast, scalable way to train autonomous vehicles, but current efforts are falling short in translating virtual testing into real-world performance.</p>
+    <a href="/musings/avs002" class="feed-cta">Read post →</a>
+  </div>
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-musing">Post</span><span class="feed-date">Aug 13, 2024</span></div>
+    <h2><a href="/musings/llm007">Exploring Parallels Between Genetic Diversity and Model Collapse</a></h2>
+    <p>Surprising parallels between inbreeding in biology and data diversity requirements in AI systems.</p>
+    <a href="/musings/llm007" class="feed-cta">Read post →</a>
+  </div>
+  <div class="feed-item">
+    <div class="feed-meta"><span class="feed-tag tag-musing">Post</span><span class="feed-date">Jul 30, 2024</span></div>
+    <h2><a href="/musings/llm005">The Energy Cost of LLMs</a></h2>
+    <p>Training GPT-3 consumes as much energy as 100 U.S. homes use in a full year.</p>
+    <a href="/musings/llm005" class="feed-cta">Read post →</a>
+  </div>
+  <div style="height: 6rem;"></div>
+</main>
+</body>
+</html>

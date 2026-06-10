@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option B — Kinetic Scroll</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #070707; --accent: #c8a96e; --text: #ece8e0; --dim: #6a6058;
+    --font: 'Inter', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem; z-index: 100;
+    background: rgba(7,7,7,0.9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid #181818;
+  }
+  .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--dim); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 60px 3rem 0; text-align: center;
+    background: radial-gradient(ellipse at 50% 55%, #120e04 0%, var(--bg) 70%);
+  }
+  .hero-inner { max-width: 900px; }
+  .typewriter-wrap {
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+  #typewriter { border-right: 2px solid var(--accent); padding-right: 3px; }
+  h1 {
+    font-size: clamp(3.5rem, 9vw, 7rem); font-weight: 800;
+    letter-spacing: -0.04em; line-height: 0.95;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(160deg, #fff 40%, #8a7050 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-desc { font-size: 1.05rem; color: var(--dim); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .btn-row { display: flex; gap: 1rem; justify-content: center; }
+  .btn {
+    padding: 0.7rem 2rem; border: 1px solid; font-size: 0.8rem;
+    letter-spacing: 0.1em; text-transform: uppercase; border-radius: 3px;
+    text-decoration: none; transition: all 0.25s; font-weight: 500;
+  }
+  .btn.solid { background: var(--accent); border-color: var(--accent); color: #070707; }
+  .btn.solid:hover { background: #e0c080; border-color: #e0c080; }
+  .btn.outline { border-color: #333; color: var(--dim); }
+  .btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* SCROLL SECTIONS */
+  .scroll-section { padding: 7rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .scroll-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .scroll-section h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 3rem; }
+
+  /* REVEAL ANIMATION */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.75s ease, transform 0.75s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* EXP CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+  .card {
+    background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 6px;
+    padding: 1.5rem; transition: border-color 0.2s, transform 0.3s;
+  }
+  .card:hover { border-color: #3a3028; transform: translateY(-3px); }
+  .card-num { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
+  .card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .card p { font-size: 0.85rem; color: var(--dim); line-height: 1.65; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: linear-gradient(to right, transparent, #222, transparent); margin: 0 3rem; }
+
+  /* PREVIEW BADGE */
+  .preview-badge {
+    position: fixed; bottom: 1.5rem; right: 1.5rem;
+    background: var(--accent); color: #070707; padding: 0.4rem 1rem;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; border-radius: 20px; z-index: 999;
+  }
+  .back-bar {
+    position: fixed; bottom: 1.5rem; left: 1.5rem;
+    background: #111; border: 1px solid #222; color: var(--dim);
+    padding: 0.4rem 1rem; font-size: 0.7rem; letter-spacing: 0.08em;
+    border-radius: 20px; z-index: 999; text-decoration: none;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .back-bar:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<a href="/previews/" class="back-bar">← All Previews</a>
+<div class="preview-badge">Option B — Kinetic Scroll</div>
+
+<nav>
+  <a href="#" class="logo">Scott Seidel</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">About</a></li>
+    <li><a href="#">Experience</a></li>
+    <li><a href="#">Musings</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="typewriter-wrap">
+      <span id="typewriter"></span>
+    </div>
+    <h1>Scott Seidel</h1>
+    <p class="hero-desc">Managing Director leading global AI data programs at the intersection of technology, operations, and scale.</p>
+    <div class="btn-row">
+      <a href="#about" class="btn solid">About me</a>
+      <a href="#exp" class="btn outline">Experience</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="scroll-section" id="about">
+  <p class="scroll-label reveal">Background</p>
+  <h2 class="reveal reveal-delay-1">About Me</h2>
+  <p class="reveal reveal-delay-2" style="color:var(--dim);max-width:680px;line-height:1.85;margin-bottom:1.2rem;font-size:1.05rem;">
+    I am driven by tackling the most intriguing challenges in product development. With a Ph.D. in Chemical Engineering and over 14 years managing technical programs, I bring expertise across diverse domains.
+  </p>
+  <p class="reveal reveal-delay-3" style="color:var(--dim);max-width:680px;line-height:1.85;font-size:1.05rem;">
+    Beginning my career in materials science research, I discovered my passion for innovative tech. Currently, I am managing director at Soqono, where I design and execute custom AI training data collection programs for leading technology companies.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<section class="scroll-section" id="exp">
+  <p class="scroll-label reveal">Career</p>
+  <h2 class="reveal reveal-delay-1">Experience</h2>
+  <div class="card-grid">
+    <div class="card reveal reveal-delay-1">
+      <p class="card-num">01 / AI Data</p>
+      <h3>AI Training Data Collection</h3>
+      <p>Direct global AI training data collection programs across AR/VR, autonomous vehicles, biometrics, and computational photography.</p>
+    </div>
+    <div class="card reveal reveal-delay-2">
+      <p class="card-num">02 / AV</p>
+      <h3>Autonomous Vehicles</h3>
+      <p>Led VP-sponsored programs critical to mitigating risks and resolving bottlenecks during the scaling of autonomous vehicle technology.</p>
+    </div>
+    <div class="card reveal reveal-delay-3">
+      <p class="card-num">03 / AR/VR</p>
+      <h3>AR/VR Development</h3>
+      <p>Led data collection and hardware validation studies for next-generation AR/VR products using engineering prototypes.</p>
+    </div>
+    <div class="card reveal reveal-delay-4">
+      <p class="card-num">04 / Research</p>
+      <h3>Materials Research</h3>
+      <p>Led a team pioneering novel material processing methods. Published 12 peer-reviewed papers and 1 patent.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+// Typewriter
+const phrases = ['Managing Director', 'AI Data Programs', 'Ph.D. Chem. Engineering', 'Global Program Leader'];
+let pi = 0, ci = 0, deleting = false, pauseT = 0;
+const el = document.getElementById('typewriter');
+function type() {
+  const phrase = phrases[pi];
+  if (!deleting) {
+    el.textContent = phrase.slice(0, ci + 1);
+    ci++;
+    if (ci === phrase.length) { deleting = true; setTimeout(type, 1800); return; }
+    setTimeout(type, 65);
+  } else {
+    el.textContent = phrase.slice(0, ci - 1);
+    ci--;
+    if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(type, 300); return; }
+    setTimeout(type, 35);
+  }
+}
+type();
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  page?: string;
+}
+
+const { title = 'Scott Seidel', page = '' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Scott Seidel — Managing Director, AI Data Programs" />
+    <title>{title}</title>
+    <script type="importmap">
+    { "imports": { "motion": "https://esm.sh/motion@11?exports=animate,stagger,scroll,spring" } }
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23050505'/%3E%3Ccircle cx='32' cy='14' r='7' fill='%23037CFE'/%3E%3Ccircle cx='14' cy='46' r='5.5' fill='%2300FFE0'/%3E%3Ccircle cx='50' cy='46' r='5.5' fill='%23FFF903'/%3E%3C/svg%3E" type="image/svg+xml" />
+  </head>
+  <body>
+    <!-- Particle canvas — fixed full viewport, always visible -->
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+    <!-- Floating pill nav -->
+    <nav class="site-nav" id="site-nav">
+      <a href="/" class="nav-logo">Scott Seidel</a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <a href="/#about" class="nav-item">About</a>
+      <a href="/#experience" class="nav-item">Experience</a>
+      <a href="/#musings" class="nav-item">Musings</a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <a href="https://www.linkedin.com/in/scott-seidel" target="_blank" rel="noopener" class="nav-li" aria-label="LinkedIn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+    </nav>
+
+    <slot />
+
+    <footer class="site-footer">
+      <p class="footer-line">
+        © 2026 Scott Seidel &nbsp;·&nbsp;
+        <a href="https://www.linkedin.com/in/scott-seidel" target="_blank" rel="noopener">LinkedIn</a>
+        &nbsp;·&nbsp;
+        <a href="https://scholar.google.com/citations?user=FVHVCKwAAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
+      </p>
+    </footer>
+
+    <script is:inline>
+    // ── Custom cursor ─────────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    });
+    // Use event delegation so it works on all links/buttons including dynamically revealed ones
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest('a, button')) cursor.classList.add('on-link');
+    });
+    document.addEventListener('mouseout', e => {
+      if (e.target.closest('a, button')) cursor.classList.remove('on-link');
+    });
+
+    // ── Particle field ─────────────────────────────────────────
+    // Canvas is fixed and covers the full viewport at all times.
+    // Mouse coordinates track relative to the fixed canvas (clientX/Y).
+    (function () {
+      const canvas = document.getElementById('particle-canvas');
+      const ctx    = canvas.getContext('2d');
+
+      const PALETTE      = ['#037CFE','#00FFE0','#FFF903','#94EC0E','#FA0098'];
+      const SPACING      = 36;
+      const REPEL_RADIUS = 130;
+      const REPEL_FORCE  = 5.5;
+      const SPRING       = 0.055;
+      const DAMPING      = 0.87;
+      const DOT_REST     = 1.1;
+      const DOT_ACTIVE   = 2.8;
+      const COLOR_REST   = 'rgba(255,255,255,0.22)';
+
+      let particles = [], W, H;
+      const mouse = { x: -9999, y: -9999 };
+
+      function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        build();
+      }
+
+      function build() {
+        particles = [];
+        const offX = (W % SPACING) / 2;
+        const offY = (H % SPACING) / 2;
+        const cols = Math.ceil(W / SPACING) + 1;
+        const rows = Math.ceil(H / SPACING) + 1;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const ox = offX + c * SPACING;
+            const oy = offY + r * SPACING;
+            particles.push({
+              x: ox, y: oy, ox, oy, vx: 0, vy: 0,
+              color: PALETTE[Math.floor(Math.random() * PALETTE.length)]
+            });
+          }
+        }
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, W, H);
+        for (const p of particles) {
+          const dx   = p.x - mouse.x;
+          const dy   = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < REPEL_RADIUS && dist > 0) {
+            const f = (1 - dist / REPEL_RADIUS) * REPEL_FORCE;
+            p.vx += (dx / dist) * f;
+            p.vy += (dy / dist) * f;
+          }
+
+          p.vx += (p.ox - p.x) * SPRING;
+          p.vy += (p.oy - p.y) * SPRING;
+          p.vx *= DAMPING;
+          p.vy *= DAMPING;
+          p.x  += p.vx;
+          p.y  += p.vy;
+
+          const active = dist < REPEL_RADIUS;
+          const t      = active ? 1 - dist / REPEL_RADIUS : 0;
+          const r2     = DOT_REST + (DOT_ACTIVE - DOT_REST) * t;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, r2, 0, Math.PI * 2);
+          ctx.fillStyle   = active ? p.color : COLOR_REST;
+          ctx.globalAlpha = active ? 0.45 + t * 0.55 : 1;
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tick);
+      }
+
+      // Mouse coords are viewport-relative (canvas is fixed)
+      document.addEventListener('mousemove', e => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      // Fade scroll indicator quickly — gone by 100px of scroll
+      const scrollLine = document.getElementById('scroll-line');
+      window.addEventListener('scroll', () => {
+        const pct = Math.max(0, 1 - window.scrollY / 100);
+        if (scrollLine) scrollLine.style.opacity = pct;
+      }, { passive: true });
+
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+      tick();
+    })();
+    </script>
+  </body>
+</html>

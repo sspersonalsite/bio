@@ -1,0 +1,611 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Scott Seidel" page="about">
+
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <section class="hero" id="hero" aria-label="Introduction">
+    <h1 class="hero-name" aria-label="Scott Seidel">
+      <!-- "Scott" — white, letters stagger via animation-delay -->
+      <span class="hero-line" aria-hidden="true">
+        <span class="hero-name-letter" style="animation-delay:60ms">S</span>
+        <span class="hero-name-letter" style="animation-delay:102ms">c</span>
+        <span class="hero-name-letter" style="animation-delay:144ms">o</span>
+        <span class="hero-name-letter" style="animation-delay:186ms">t</span>
+        <span class="hero-name-letter" style="animation-delay:228ms">t</span>
+      </span>
+      <!-- "Seidel" — electric blue -->
+      <span class="hero-line" aria-hidden="true">
+        <span class="hero-name-letter" style="animation-delay:270ms;--letter-color:#037CFE">S</span>
+        <span class="hero-name-letter" style="animation-delay:312ms;--letter-color:#037CFE">e</span>
+        <span class="hero-name-letter" style="animation-delay:354ms;--letter-color:#037CFE">i</span>
+        <span class="hero-name-letter" style="animation-delay:396ms;--letter-color:#037CFE">d</span>
+        <span class="hero-name-letter" style="animation-delay:438ms;--letter-color:#037CFE">e</span>
+        <span class="hero-name-letter" style="animation-delay:480ms;--letter-color:#037CFE">l</span>
+      </span>
+    </h1>
+
+    <div class="hero-meta">
+      <span class="hero-meta-line" style="animation-delay:700ms">Managing Director @ Soqono</span>
+      <span class="hero-meta-line" style="animation-delay:800ms">Founder · PhD Engineer · Technical Research Operations</span>
+    </div>
+
+    <div class="hero-links" id="hero-links">
+      <a href="https://www.soqono.com" target="_blank" rel="noopener" class="hero-link" style="--link-color:#94EC0E">Soqono</a>
+      <a href="https://www.linkedin.com/in/scott-seidel" target="_blank" rel="noopener" class="hero-link" style="--link-color:#00FFE0">LinkedIn</a>
+      <a href="https://scholar.google.com/citations?user=FVHVCKwAAAAJ&hl=en" target="_blank" rel="noopener" class="hero-link" style="--link-color:#FFF903">Scholar</a>
+    </div>
+  </section>
+
+  <!-- Scroll indicator — centered mouse icon with cascading chevrons -->
+  <div class="scroll-line" id="scroll-line" aria-hidden="true">
+    <div class="scroll-inner">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <div class="scroll-chevrons">
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- ── About card ──────────────────────────────────────── -->
+    <div class="section-card" data-reveal>
+      <div class="section-row" id="about" style="--section-color:#037CFE">
+        <h2>About</h2>
+      </div>
+      <div class="bio-block">
+        <p>
+          I turn deep-tech research into products that ship at global scale.
+          With a PhD in Chemical Engineering and 15 years of technical leadership,
+          I've taken complex technologies from the lab to worldwide deployment across
+          <strong>consumer electronics</strong>, <strong>autonomous vehicles</strong>,
+          <strong>AR/VR</strong>, and <strong>frontier AI</strong>.
+        </p>
+        <p>
+          As Founder and Managing Director of
+          <a href="https://www.soqono.com" target="_blank" rel="noopener">Soqono</a>,
+          I design and run custom AI training data collection and technical research
+          operations programs for the world's leading tech companies, with delivery
+          across 20+ countries. This work powers product development for
+          next-generation technologies, providing the data and research infrastructure
+          behind algorithm development at some of the most advanced engineering
+          organizations in the world.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Experience card ─────────────────────────────────── -->
+    <div class="section-card" data-reveal>
+      <div class="section-row" id="experience" style="--section-color:#00FFE0">
+        <h2>Experience</h2>
+      </div>
+
+      <div class="exp-block" data-reveal>
+        <div class="exp-anim" data-anim="matrix" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- 4 columns × 5 rows — lights up left to right, top to bottom -->
+            <!-- col 0 (x=40) -->
+            <circle class="mdot" cx="40" cy="28"  r="2.2" style="animation-delay:0.00s"/>
+            <circle class="mdot" cx="40" cy="63"  r="2.2" style="animation-delay:0.10s"/>
+            <circle class="mdot" cx="40" cy="100" r="2.2" style="animation-delay:0.20s"/>
+            <circle class="mdot" cx="40" cy="137" r="2.2" style="animation-delay:0.30s"/>
+            <circle class="mdot" cx="40" cy="172" r="2.2" style="animation-delay:0.40s"/>
+            <!-- col 1 (x=80) -->
+            <circle class="mdot" cx="80" cy="28"  r="2.2" style="animation-delay:0.70s"/>
+            <circle class="mdot" cx="80" cy="63"  r="2.2" style="animation-delay:0.80s"/>
+            <circle class="mdot" cx="80" cy="100" r="2.2" style="animation-delay:0.90s"/>
+            <circle class="mdot" cx="80" cy="137" r="2.2" style="animation-delay:1.00s"/>
+            <circle class="mdot" cx="80" cy="172" r="2.2" style="animation-delay:1.10s"/>
+            <!-- col 2 (x=120) -->
+            <circle class="mdot" cx="120" cy="28"  r="2.2" style="animation-delay:1.40s"/>
+            <circle class="mdot" cx="120" cy="63"  r="2.2" style="animation-delay:1.50s"/>
+            <circle class="mdot" cx="120" cy="100" r="2.2" style="animation-delay:1.60s"/>
+            <circle class="mdot" cx="120" cy="137" r="2.2" style="animation-delay:1.70s"/>
+            <circle class="mdot" cx="120" cy="172" r="2.2" style="animation-delay:1.80s"/>
+            <!-- col 3 (x=160) -->
+            <circle class="mdot" cx="160" cy="28"  r="2.2" style="animation-delay:2.10s"/>
+            <circle class="mdot" cx="160" cy="63"  r="2.2" style="animation-delay:2.20s"/>
+            <circle class="mdot" cx="160" cy="100" r="2.2" style="animation-delay:2.30s"/>
+            <circle class="mdot" cx="160" cy="137" r="2.2" style="animation-delay:2.40s"/>
+            <circle class="mdot" cx="160" cy="172" r="2.2" style="animation-delay:2.50s"/>
+          </svg>
+        </div>
+        <div class="exp-content">
+          <div class="exp-top">
+            <span class="exp-role">AI Data &amp; Research Operations</span>
+          </div>
+          <div class="exp-company">The common thread</div>
+          <p class="exp-desc">For over a decade, through Soqono and global consulting programs before it, I've designed and run the custom data collection and research operations that state-of-the-art tech products are built on. Delivered across 20+ countries for the world's leading tech companies.</p>
+        </div>
+      </div>
+
+      <div class="exp-block" data-reveal>
+        <div class="exp-anim" data-anim="converge" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Guide lines from each direction to center (faint) -->
+            <line class="cguid" x1="100" y1="28"  x2="100" y2="100"/>
+            <line class="cguid" x1="152" y1="48"  x2="100" y2="100"/>
+            <line class="cguid" x1="172" y1="100" x2="100" y2="100"/>
+            <line class="cguid" x1="152" y1="152" x2="100" y2="100"/>
+            <line class="cguid" x1="100" y1="172" x2="100" y2="100"/>
+            <line class="cguid" x1="48"  y1="152" x2="100" y2="100"/>
+            <line class="cguid" x1="28"  y1="100" x2="100" y2="100"/>
+            <line class="cguid" x1="48"  y1="48"  x2="100" y2="100"/>
+            <!-- 8 dots converging toward center — custom translate via CSS vars -->
+            <circle class="cdot" cx="100" cy="28"  r="3" style="--tx:0px;  --ty:72px;  animation-delay:0s"/>
+            <circle class="cdot" cx="152" cy="48"  r="3" style="--tx:-52px;--ty:52px;  animation-delay:0.1s"/>
+            <circle class="cdot" cx="172" cy="100" r="3" style="--tx:-72px;--ty:0px;   animation-delay:0.2s"/>
+            <circle class="cdot" cx="152" cy="152" r="3" style="--tx:-52px;--ty:-52px; animation-delay:0.3s"/>
+            <circle class="cdot" cx="100" cy="172" r="3" style="--tx:0px;  --ty:-72px; animation-delay:0.4s"/>
+            <circle class="cdot" cx="48"  cy="152" r="3" style="--tx:52px; --ty:-52px; animation-delay:0.5s"/>
+            <circle class="cdot" cx="28"  cy="100" r="3" style="--tx:72px; --ty:0px;   animation-delay:0.6s"/>
+            <circle class="cdot" cx="48"  cy="48"  r="3" style="--tx:52px; --ty:52px;  animation-delay:0.7s"/>
+            <!-- Center node — pulses when dots arrive -->
+            <circle class="ctr-node" cx="100" cy="100" r="4"/>
+          </svg>
+        </div>
+        <div class="exp-content">
+          <div class="exp-top">
+            <span class="exp-role">Frontier AI</span>
+          </div>
+          <div class="exp-company">Data for models the world hasn't met yet</div>
+          <p class="exp-desc">Research and data programs supporting the development of generative AI systems now shipping on the world's most widely used devices, and of the next generations still in the lab.</p>
+        </div>
+      </div>
+
+      <div class="exp-block" data-reveal>
+        <div class="exp-anim" data-anim="facescan" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Face outline -->
+            <ellipse class="face-oval" cx="100" cy="100" rx="52" ry="66"/>
+            <!-- Landmark dots — staggered by y-position to match scan timing -->
+            <circle class="lm" cx="100" cy="36"  r="2"   style="animation-delay:0.5s"/>
+            <circle class="lm" cx="62"  cy="80"  r="1.8" style="animation-delay:1.4s"/>
+            <circle class="lm" cx="138" cy="80"  r="1.8" style="animation-delay:1.4s"/>
+            <circle class="lm" cx="64"  cy="88"  r="1.8" style="animation-delay:1.6s"/>
+            <circle class="lm" cx="92"  cy="88"  r="1.8" style="animation-delay:1.6s"/>
+            <circle class="lm" cx="108" cy="88"  r="1.8" style="animation-delay:1.6s"/>
+            <circle class="lm" cx="136" cy="88"  r="1.8" style="animation-delay:1.6s"/>
+            <circle class="lm" cx="58"  cy="108" r="1.8" style="animation-delay:2.0s"/>
+            <circle class="lm" cx="142" cy="108" r="1.8" style="animation-delay:2.0s"/>
+            <circle class="lm" cx="100" cy="116" r="1.8" style="animation-delay:2.1s"/>
+            <circle class="lm" cx="90"  cy="120" r="1.8" style="animation-delay:2.3s"/>
+            <circle class="lm" cx="110" cy="120" r="1.8" style="animation-delay:2.3s"/>
+            <circle class="lm" cx="83"  cy="131" r="1.8" style="animation-delay:2.5s"/>
+            <circle class="lm" cx="117" cy="131" r="1.8" style="animation-delay:2.5s"/>
+            <circle class="lm" cx="68"  cy="140" r="1.8" style="animation-delay:2.7s"/>
+            <circle class="lm" cx="132" cy="140" r="1.8" style="animation-delay:2.7s"/>
+            <circle class="lm" cx="80"  cy="154" r="1.8" style="animation-delay:3.0s"/>
+            <circle class="lm" cx="120" cy="154" r="1.8" style="animation-delay:3.0s"/>
+            <circle class="lm" cx="100" cy="164" r="2"   style="animation-delay:3.3s"/>
+            <!-- Scanner corner brackets -->
+            <path class="fs-corner" d="M26,58 L26,22 L58,22"/>
+            <path class="fs-corner" d="M142,22 L174,22 L174,58"/>
+            <path class="fs-corner" d="M26,142 L26,178 L58,178"/>
+            <path class="fs-corner" d="M142,178 L174,178 L174,142"/>
+            <!-- Scan line (translateY via CSS) -->
+            <line class="fs-scan" x1="26" y1="22" x2="174" y2="22"/>
+            <!-- Verified ring — expands briefly after scan -->
+            <circle class="fs-ring" cx="100" cy="100" r="62"/>
+          </svg>
+        </div>
+        <div class="exp-content">
+          <div class="exp-top">
+            <span class="exp-role">Consumer Hardware AI</span>
+          </div>
+          <div class="exp-company">From prototype labs to a billion pockets</div>
+          <p class="exp-desc">Global data programs behind biometric and computational photography algorithms now running on some of the most widely deployed consumer devices in the world. Five continents, from hardware validation through to algorithm handoff.</p>
+        </div>
+      </div>
+
+      <div class="exp-block" data-reveal>
+        <div class="exp-anim" data-anim="mesh" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle class="wire" cx="100" cy="100" r="68"/>
+            <ellipse class="wire" cx="100" cy="100" rx="68" ry="24"/>
+            <ellipse class="wire" cx="100" cy="100" rx="68" ry="48"/>
+            <ellipse class="wire" cx="100" cy="100" rx="24" ry="68"/>
+            <ellipse class="wire" cx="100" cy="100" rx="48" ry="68"/>
+            <line class="wire" x1="100" y1="32" x2="100" y2="168"/>
+            <line class="wire" x1="32" y1="100" x2="168" y2="100"/>
+            <line class="scan" x1="38" y1="35" x2="162" y2="35"/>
+            <circle class="vert" cx="100" cy="32"  r="2.6" style="animation-delay:-0.1s"/>
+            <circle class="vert" cx="59"  cy="53"  r="2.6" style="animation-delay:0.69s"/>
+            <circle class="vert" cx="141" cy="53"  r="2.6" style="animation-delay:0.69s"/>
+            <circle class="vert" cx="35"  cy="83"  r="2.6" style="animation-delay:1.85s"/>
+            <circle class="vert" cx="165" cy="83"  r="2.6" style="animation-delay:1.85s"/>
+            <circle class="vert" cx="32"  cy="100" r="2.6" style="animation-delay:2.5s"/>
+            <circle class="vert" cx="168" cy="100" r="2.6" style="animation-delay:2.5s"/>
+            <circle class="vert" cx="59"  cy="147" r="2.6" style="animation-delay:4.31s"/>
+            <circle class="vert" cx="141" cy="147" r="2.6" style="animation-delay:4.31s"/>
+            <circle class="vert" cx="100" cy="168" r="2.6" style="animation-delay:5.12s"/>
+          </svg>
+        </div>
+        <div class="exp-content">
+          <div class="exp-top">
+            <span class="exp-role">AR / VR &amp; Spatial Computing</span>
+          </div>
+          <div class="exp-company">Teaching machines to see the world as we do</div>
+          <p class="exp-desc">Data collection programs for the perception systems at the heart of spatial computing: eye and hand tracking, environment understanding, and human-centered sensing for headsets and wearables now defining the category.</p>
+        </div>
+      </div>
+
+      <div class="exp-block" data-reveal>
+        <div class="exp-anim" data-anim="lidar" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="lidar-fade" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" stop-color="#00FFE0" stop-opacity="0.30"/>
+                <stop offset="1" stop-color="#00FFE0" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <circle class="grid" cx="100" cy="100" r="80"/>
+            <circle class="grid" cx="100" cy="100" r="54"/>
+            <circle class="grid" cx="100" cy="100" r="28"/>
+            <line class="grid" x1="20" y1="100" x2="180" y2="100"/>
+            <line class="grid" x1="100" y1="20" x2="100" y2="180"/>
+            <g class="sweep">
+              <path d="M100,100 L180,100 A80,80 0 0 0 161.3,48.6 Z" fill="url(#lidar-fade)"/>
+              <line class="beam" x1="100" y1="100" x2="180" y2="100"/>
+            </g>
+            <circle class="blip" cx="160" cy="120" r="3"   style="animation-delay:0.30s"/>
+            <circle class="blip" cx="130" cy="160" r="2.6" style="animation-delay:1.05s"/>
+            <circle class="blip" cx="60"  cy="150" r="3"   style="animation-delay:2.14s"/>
+            <circle class="blip" cx="40"  cy="80"  r="2.6" style="animation-delay:3.30s"/>
+            <circle class="blip" cx="90"  cy="40"  r="3"   style="animation-delay:4.34s"/>
+            <circle class="core" cx="100" cy="100" r="3.5"/>
+          </svg>
+        </div>
+        <div class="exp-content">
+          <div class="exp-top">
+            <span class="exp-role">Autonomous Systems &amp; Robotics</span>
+          </div>
+          <div class="exp-company">Robots at city scale</div>
+          <p class="exp-desc">Executive-sponsored programs resolving the critical bottlenecks in commercializing self-driving vehicles: robots navigating public streets. Spanning engineering, safety, and operations on the path to public deployment.</p>
+        </div>
+      </div>
+
+      <div class="exp-block" data-reveal>
+        <div class="exp-anim" data-anim="flask" aria-hidden="true">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Clip path matching the flask interior -->
+              <clipPath id="fl-clip">
+                <path d="M88,32 L112,32 L112,82 L160,162 Q165,174 154,175 L46,175 Q35,174 40,162 L88,82 Z"/>
+              </clipPath>
+            </defs>
+            <!-- Stopper / cork -->
+            <rect class="fcork" x="88" y="20" width="24" height="13" rx="3"/>
+            <!-- Neck top cap line -->
+            <line class="foutline" x1="83" y1="32" x2="117" y2="32"/>
+            <!-- Flask outline (Erlenmeyer shape) -->
+            <path class="foutline" d="M88,32 L88,82 L40,162 Q35,174 46,175 L154,175 Q165,174 160,162 L112,82 L112,32"/>
+            <!-- Scale markings on flask body (right side) -->
+            <line class="fmark" x1="120" y1="120" x2="129" y2="120"/>
+            <line class="fmark" x1="123" y1="140" x2="133" y2="140"/>
+            <line class="fmark" x1="126" y1="160" x2="137" y2="160"/>
+            <!-- Liquid fill (clipped to flask shape) -->
+            <rect class="fliq" x="25" y="118" width="150" height="65" clip-path="url(#fl-clip)"/>
+            <!-- Bubbles rising through liquid (clipped) -->
+            <circle class="fbub" cx="100" cy="165" r="4.5" style="animation-delay:0.0s"  clip-path="url(#fl-clip)"/>
+            <circle class="fbub" cx="82"  cy="155" r="3"   style="animation-delay:0.85s" clip-path="url(#fl-clip)"/>
+            <circle class="fbub" cx="116" cy="148" r="3.5" style="animation-delay:1.70s" clip-path="url(#fl-clip)"/>
+            <circle class="fbub" cx="98"  cy="138" r="2.5" style="animation-delay:2.55s" clip-path="url(#fl-clip)"/>
+          </svg>
+        </div>
+        <div class="exp-content">
+          <div class="exp-top">
+            <span class="exp-role">Deep-Tech Foundations</span>
+          </div>
+          <div class="exp-company">Where the rigor comes from</div>
+          <p class="exp-desc">A PhD in Chemical Engineering, leading a research team pioneering novel material processing methods for aerospace, biomedical, and consumer electronics applications. 12 peer-reviewed <a href="https://scholar.google.com/citations?user=FVHVCKwAAAAJ&hl=en" target="_blank" rel="noopener">publications</a> and 1 <a href="https://patentimages.storage.googleapis.com/0b/91/67/652b8a98befcc5/US9376516.pdf" target="_blank" rel="noopener">patent</a>. The scientific method, applied to everything above.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Musings card ────────────────────────────────────── -->
+    <div class="section-card" data-reveal>
+      <div class="section-row" id="musings" style="--section-color:#FFF903">
+        <h2>Musings</h2>
+      </div>
+
+      <div class="musings-list">
+        <a href="/musings/avs002" class="post-row" data-reveal-stagger>
+          <span class="post-date">Sep 10, 2024</span>
+          <span class="post-title">The Gap Between Simulation and Real-world Mileage Data</span>
+        </a>
+        <a href="/musings/avs001" class="post-row" data-reveal-stagger>
+          <span class="post-date">Sep 3, 2024</span>
+          <span class="post-title">Mileage Data in AV Development</span>
+        </a>
+        <a href="/musings/llm007" class="post-row" data-reveal-stagger>
+          <span class="post-date">Aug 13, 2024</span>
+          <span class="post-title">Exploring Parallels Between Genetic Diversity and Model Collapse</span>
+        </a>
+        <a href="/musings/llm006" class="post-row" data-reveal-stagger>
+          <span class="post-date">Aug 6, 2024</span>
+          <span class="post-title">LLM Collapse from Self-Generated Data</span>
+        </a>
+        <a href="/musings/llm005" class="post-row" data-reveal-stagger>
+          <span class="post-date">Jul 30, 2024</span>
+          <span class="post-title">Energy of LLMs</span>
+        </a>
+        <a href="/musings/llm004" class="post-row" data-reveal-stagger>
+          <span class="post-date">Jul 23, 2024</span>
+          <span class="post-title">Role of Data Quality in Training LLMs</span>
+        </a>
+        <a href="/musings/llm003" class="post-row" data-reveal-stagger>
+          <span class="post-date">Jul 16, 2024</span>
+          <span class="post-title">Expansive Landscape of LLM Training Data</span>
+        </a>
+        <a href="/musings/tpm001" class="post-row" data-reveal-stagger>
+          <span class="post-date">Jul 9, 2024</span>
+          <span class="post-title">Benefits of Centralized TPM Teams</span>
+        </a>
+        <a href="/musings/llm002" class="post-row" data-reveal-stagger>
+          <span class="post-date">Jul 5, 2024</span>
+          <span class="post-title">LLM Model Comparison for Factual Recall</span>
+        </a>
+        <a href="/musings/llm001" class="post-row" data-reveal-stagger>
+          <span class="post-date">Jul 2, 2024</span>
+          <span class="post-title">Geographic Bias in LLMs</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<style is:global>
+/* ════════════════════════════════════════════════════════
+   Experience block animations — SVG + CSS, no JS
+   ════════════════════════════════════════════════════════ */
+
+.exp-block { position: relative; }
+
+.exp-anim {
+  position: absolute;
+  right: 1.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 110px;
+  height: 110px;
+  pointer-events: none;
+  opacity: 0.9;
+  --accent: #00FFE0;
+}
+.exp-anim svg { width: 100%; height: 100%; display: block; }
+
+/* Keep text clear of the animation widget on desktop */
+.exp-block .exp-content { padding-right: 160px; }
+
+/* Hide on narrow screens */
+@media (max-width: 820px) {
+  .exp-anim { display: none; }
+  .exp-block .exp-content { padding-right: 0; }
+}
+
+/* Pause animations until the block has scrolled into view */
+.exp-block:not(.in) .exp-anim * { animation-play-state: paused !important; }
+
+/* ── 1. Matrix — data grid column-wave (AI Data & Research Ops) ── */
+.exp-anim[data-anim="matrix"] .mdot {
+  fill: var(--accent);
+  opacity: 0.12;
+  animation: mdot-flash 4s ease-in-out infinite;
+}
+@keyframes mdot-flash {
+  0%, 100%   { opacity: 0.12; r: 2.2px; }
+  35%, 58%   { opacity: 0.95; r: 3.2px; }
+}
+
+/* ── 2. Converge — 8 dots racing to center (Frontier AI) ── */
+.exp-anim[data-anim="converge"] .cguid {
+  stroke: var(--accent);
+  stroke-width: 0.6;
+  opacity: 0.18;
+  stroke-dasharray: 3 4;
+}
+.exp-anim[data-anim="converge"] .cdot {
+  fill: var(--accent);
+  opacity: 0.45;
+  animation: conv-in 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.exp-anim[data-anim="converge"] .ctr-node {
+  fill: var(--accent);
+  animation: ctr-pulse 4.5s ease-in-out infinite;
+}
+@keyframes conv-in {
+  0%, 8%       { transform: translate(0, 0);                        opacity: 0.45; }
+  42%, 58%     { transform: translate(var(--tx), var(--ty));        opacity: 1; }
+  90%, 100%    { transform: translate(0, 0);                        opacity: 0.45; }
+}
+@keyframes ctr-pulse {
+  0%, 35%      { r: 4px; opacity: 0.25; }
+  48%, 55%     { r: 8px; opacity: 1; }
+  70%, 100%    { r: 4px; opacity: 0.25; }
+}
+
+/* ── 3. Face Scan — biometric face scanner (Consumer Hardware) ── */
+.exp-anim[data-anim="facescan"] .face-oval {
+  stroke: var(--accent); fill: none; stroke-width: 1.2; opacity: 0.35;
+}
+/* Landmark dots — lit as scan line passes over each one */
+.exp-anim[data-anim="facescan"] .lm {
+  fill: var(--accent); opacity: 0;
+  animation: lm-appear 5.2s ease-in-out infinite;
+}
+/* Corner brackets — always visible at low opacity */
+.exp-anim[data-anim="facescan"] .fs-corner {
+  stroke: var(--accent); fill: none; stroke-width: 1.5; opacity: 0.68;
+}
+/* Scan line — sweeps top→bottom */
+.exp-anim[data-anim="facescan"] .fs-scan {
+  stroke: var(--accent); stroke-width: 1.2; opacity: 0;
+  animation: fss-scan 5.2s ease-in-out infinite;
+}
+/* Verified ring — pulses after scan completes */
+.exp-anim[data-anim="facescan"] .fs-ring {
+  fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0;
+  transform-box: view-box; transform-origin: 50% 50%;
+  animation: fss-ring 5.2s ease-in-out infinite;
+}
+@keyframes fss-scan {
+  0%, 5%     { transform: translateY(0);     opacity: 0; }
+  9%         { opacity: 0.85; }
+  72%        { transform: translateY(156px); opacity: 0.85; }
+  76%        { transform: translateY(156px); opacity: 0; }
+  77%, 100%  { transform: translateY(0);     opacity: 0; }
+}
+@keyframes lm-appear {
+  0%, 40%   { opacity: 0; }
+  55%, 72%  { opacity: 0.95; }
+  82%, 100% { opacity: 0.25; }
+}
+@keyframes fss-feat {
+  0%, 40%   { opacity: 0; }
+  58%, 72%  { opacity: 0.8; }
+  84%, 100% { opacity: 0.2; }
+}
+@keyframes fss-ring {
+  0%, 76%    { opacity: 0; transform: scale(0.88); }
+  84%, 92%   { opacity: 0.85; transform: scale(1); }
+  100%       { opacity: 0; transform: scale(1.06); }
+}
+
+/* ── 4. Mesh — AR/VR wireframe globe (unchanged) ── */
+.exp-anim[data-anim="mesh"] .wire {
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 0.8;
+  opacity: 0.4;
+}
+.exp-anim[data-anim="mesh"] .scan {
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  opacity: 0.9;
+  animation: mesh-scan 5s linear infinite;
+}
+.exp-anim[data-anim="mesh"] .vert {
+  fill: var(--accent);
+  opacity: 0.15;
+  animation: mesh-flash 5s linear infinite;
+}
+@keyframes mesh-scan {
+  0%   { transform: translateY(0);     opacity: 0; }
+  4%   { opacity: 0.9; }
+  92%  { opacity: 0.9; }
+  100% { transform: translateY(130px); opacity: 0; }
+}
+@keyframes mesh-flash {
+  0%, 100% { opacity: 0.15; }
+  3%       { opacity: 1; }
+  18%      { opacity: 0.15; }
+}
+
+/* ── 5. Lidar — AV radar sweep (unchanged) ── */
+.exp-anim[data-anim="lidar"] .sweep {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: lidar-rot 6s linear infinite;
+}
+.exp-anim[data-anim="lidar"] .beam { stroke: var(--accent); stroke-width: 1.4; opacity: 0.9; }
+.exp-anim[data-anim="lidar"] .grid { stroke: var(--accent); fill: none; stroke-width: 0.7; opacity: 0.3; }
+.exp-anim[data-anim="lidar"] .blip { fill: var(--accent); opacity: 0.15; animation: lidar-blip 6s linear infinite; }
+.exp-anim[data-anim="lidar"] .core { fill: var(--accent); }
+@keyframes lidar-rot {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes lidar-blip {
+  0%, 100% { opacity: 0.15; }
+  2%       { opacity: 1; }
+  30%      { opacity: 0.15; }
+}
+
+/* ── 6. Flask — Erlenmeyer with liquid + bubbles (Deep-Tech) ── */
+.exp-anim[data-anim="flask"] .foutline {
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.5;
+  opacity: 0.9;
+}
+.exp-anim[data-anim="flask"] .fcork {
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1;
+  opacity: 0.7;
+}
+.exp-anim[data-anim="flask"] .fmark {
+  stroke: var(--accent);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+.exp-anim[data-anim="flask"] .fliq {
+  fill: var(--accent);
+  animation: fliq-shimmer 4s ease-in-out infinite;
+}
+.exp-anim[data-anim="flask"] .fbub {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  opacity: 0;
+  animation: fbub-rise 3s ease-in infinite;
+}
+@keyframes fliq-shimmer {
+  0%, 100% { opacity: 0.10; }
+  50%      { opacity: 0.18; }
+}
+@keyframes fbub-rise {
+  0%   { transform: translateY(0);     opacity: 0; }
+  8%   { opacity: 0.85; }
+  85%  { opacity: 0.4; }
+  100% { transform: translateY(-72px); opacity: 0; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .exp-anim * { animation: none !important; }
+  .exp-anim[data-anim="matrix"]      .mdot       { opacity: 0.5; }
+  .exp-anim[data-anim="converge"]    .cdot       { opacity: 0.5; }
+  .exp-anim[data-anim="facescan"]    .lm         { opacity: 0.5; }
+  .exp-anim[data-anim="facescan"]    .fs-scan    { opacity: 0; }
+  .exp-anim[data-anim="mesh"]        .scan       { opacity: 0; }
+  .exp-anim[data-anim="mesh"]    .vert,
+  .exp-anim[data-anim="lidar"]   .blip  { opacity: 0.5; }
+  .exp-anim[data-anim="flask"]   .fbub  { opacity: 0; }
+}
+</style>
+
+<script>
+// Scroll-triggered reveals via IntersectionObserver + CSS keyframe animation
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      revealObs.unobserve(entry.target);
+    }
+  });
+}, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+document.querySelectorAll('[data-reveal]').forEach(el => revealObs.observe(el));
+
+// Staggered musings rows
+const firstRow = document.querySelector('[data-reveal-stagger]');
+if (firstRow) {
+  new IntersectionObserver((entries, obs) => {
+    if (entries[0].isIntersecting) {
+      [...document.querySelectorAll('[data-reveal-stagger]')].forEach((row, i) => {
+        setTimeout(() => row.classList.add('in'), i * 48);
+      });
+      obs.disconnect();
+    }
+  }, { rootMargin: '0px 0px -5% 0px', threshold: 0.08 }).observe(firstRow);
+}
+</script>

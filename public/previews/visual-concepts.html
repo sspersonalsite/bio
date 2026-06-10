@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Visual Concept Mockups</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0e0c0a; color: #e8e3db; font-family: 'Inter', system-ui, sans-serif; font-weight: 300; padding: 3rem 2rem 6rem; }
+  h1 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #5b8fb0; font-weight: 500; margin-bottom: 0.5rem; }
+  .intro { font-size: 0.85rem; color: #4a4438; margin-bottom: 3rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+  .card { border: 1px solid #1c1916; border-radius: 4px; overflow: hidden; text-decoration: none; display: block; transition: border-color 0.2s, transform 0.2s; }
+  .card:hover { border-color: #5b8fb0; transform: translateY(-2px); }
+  .thumb { height: 200px; position: relative; overflow: hidden; background: #0e0c0a; }
+  .card-body { padding: 1.1rem 1.3rem 1.4rem; background: #111009; }
+  .card-tag { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #5b8fb0; margin-bottom: 0.3rem; font-weight: 500; opacity: 0.8; }
+  .card-title { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.3rem; }
+  .card-desc { font-size: 0.78rem; color: #4a4438; line-height: 1.6; }
+  .open-btn { display: inline-block; margin-top: 0.75rem; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #5b8fb0; border: 1px solid #1c2830; padding: 0.3rem 0.75rem; border-radius: 3px; transition: all 0.15s; }
+  .card:hover .open-btn { background: #5b8fb0; color: #0e0c0a; border-color: #5b8fb0; }
+
+  /* --- THUMB CONTENT STYLES --- */
+
+  /* V1: Wavy line */
+  .v1-thumb { display: flex; }
+  .v1-sidebar { width: 32px; position: relative; border-right: 1px solid #1c1916; display: flex; align-items: center; justify-content: center; }
+  .v1-content { flex: 1; padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 1rem; }
+  .mock-section { display: flex; flex-direction: column; gap: 4px; }
+  .mock-label { height: 4px; width: 40px; background: #5b8fb0; opacity: 0.5; border-radius: 2px; }
+  .mock-title { height: 10px; width: 140px; background: #e8e3db; opacity: 0.12; border-radius: 2px; }
+  .mock-lines { display: flex; flex-direction: column; gap: 3px; margin-top: 4px; }
+  .mock-line { height: 5px; background: #e8e3db; opacity: 0.05; border-radius: 1px; }
+
+  /* V2: Gradient bloom */
+  .v2-bloom { position: absolute; bottom: 0; left: 0; right: 0; height: 130px; background: radial-gradient(ellipse at 30% 100%, rgba(91,143,176,0.22) 0%, rgba(91,143,176,0.06) 50%, transparent 80%); }
+  .v2-content { padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 1; }
+
+  /* V3: Scan line */
+  .v3-scan { position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, rgba(91,143,176,0.6) 20%, rgba(91,143,176,0.6) 80%, transparent); animation: scan 3s ease-in-out infinite; }
+  @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+  .v3-content { padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 1; }
+
+  /* V4: Ink bleed left */
+  .v4-ink { position: absolute; left: 0; top: 0; bottom: 0; width: 60%; background: linear-gradient(to right, rgba(20,35,50,0.85) 0%, transparent 100%); pointer-events: none; }
+  .v4-line { position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, transparent, #5b8fb0 25%, #5b8fb0 75%, transparent); }
+  .v4-content { padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 1; padding-left: 1.5rem; }
+
+  /* V5: Blue horizon line */
+  .v5-line { position: absolute; bottom: 50px; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent 0%, #5b8fb0 20%, #5b8fb0 80%, transparent 100%); opacity: 0.25; }
+  .v5-glow { position: absolute; bottom: 30px; left: 5%; right: 5%; height: 40px; background: radial-gradient(ellipse at 50% 100%, rgba(91,143,176,0.15) 0%, transparent 80%); }
+  .v5-content { padding: 1.2rem 1rem; display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 1; }
+
+  /* Shared mock elements */
+  .mock-exp { border-bottom: 1px solid #1c1916; padding: 0.6rem 0; display: flex; justify-content: space-between; align-items: baseline; }
+  .mock-exp-role { height: 7px; width: 120px; background: #e8e3db; opacity: 0.12; border-radius: 2px; }
+  .mock-exp-date { height: 5px; width: 55px; background: #e8e3db; opacity: 0.05; border-radius: 2px; }
+  .mock-co { height: 5px; width: 70px; background: #5b8fb0; opacity: 0.25; border-radius: 2px; margin-top: 3px; }
+
+  .back-bar { position: fixed; bottom: 1.5rem; right: 1.5rem; background: rgba(14,12,10,0.95); border: 1px solid #1c1916; color: #4a4438; padding: 0.38rem 0.9rem; font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 20px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .back-bar:hover { color: #5b8fb0; }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← All Previews</a>
+
+<h1>Visual Concepts</h1>
+<p class="intro">Five directions for a unifying visual element. Click any to open the full interactive preview.</p>
+
+<div class="grid">
+
+  <!-- V1: Wavy animated line -->
+  <a href="/previews/v1-wavy-line.html" class="card">
+    <div class="thumb">
+      <div class="v1-thumb" style="height:100%">
+        <div class="v1-sidebar">
+          <svg width="32" height="200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0">
+            <path id="vp1" fill="none" stroke="#5b8fb0" stroke-width="1.5" opacity="0.7"/>
+            <circle id="vc1" r="3" fill="#5b8fb0" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="v1-content">
+          <div class="mock-section">
+            <div class="mock-label"></div>
+            <div class="mock-title"></div>
+            <div class="mock-lines"><div class="mock-line" style="width:95%"></div><div class="mock-line" style="width:80%"></div><div class="mock-line" style="width:88%"></div></div>
+          </div>
+          <div class="mock-exp"><span><div class="mock-exp-role"></div><div class="mock-co"></div></span><div class="mock-exp-date"></div></div>
+          <div class="mock-exp"><span><div class="mock-exp-role" style="width:100px"></div><div class="mock-co" style="width:55px"></div></span><div class="mock-exp-date"></div></div>
+          <div class="mock-exp"><span><div class="mock-exp-role" style="width:90px"></div><div class="mock-co" style="width:80px"></div></span><div class="mock-exp-date"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">V1</p>
+      <h3 class="card-title">Wavy Animated Line</h3>
+      <p class="card-desc">A slow, breathing sine-wave in blue runs down the left margin. Subtle motion in an otherwise still layout.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <!-- V2: Blue bloom from bottom -->
+  <a href="/previews/v2-bloom.html" class="card">
+    <div class="thumb">
+      <div class="v2-bloom"></div>
+      <div class="v2-content">
+        <div class="mock-section">
+          <div class="mock-label"></div>
+          <div class="mock-title"></div>
+          <div class="mock-lines"><div class="mock-line" style="width:95%"></div><div class="mock-line" style="width:80%"></div></div>
+        </div>
+        <div class="mock-exp"><span><div class="mock-exp-role"></div><div class="mock-co"></div></span><div class="mock-exp-date"></div></div>
+        <div class="mock-exp"><span><div class="mock-exp-role" style="width:100px"></div><div class="mock-co" style="width:55px"></div></span><div class="mock-exp-date"></div></div>
+        <div class="mock-exp"><span><div class="mock-exp-role" style="width:90px"></div><div class="mock-co" style="width:80px"></div></span><div class="mock-exp-date"></div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">V2</p>
+      <h3 class="card-title">Blue Bloom from Below</h3>
+      <p class="card-desc">Each section has a very soft blue light that emanates from the lower-left corner, like a glow behind the content.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <!-- V3: Scroll scan line -->
+  <a href="/previews/v3-scan.html" class="card">
+    <div class="thumb" style="overflow:hidden">
+      <div class="v3-scan"></div>
+      <div class="v3-content">
+        <div class="mock-section">
+          <div class="mock-label"></div>
+          <div class="mock-title"></div>
+          <div class="mock-lines"><div class="mock-line" style="width:95%"></div><div class="mock-line" style="width:80%"></div></div>
+        </div>
+        <div class="mock-exp"><span><div class="mock-exp-role"></div><div class="mock-co"></div></span><div class="mock-exp-date"></div></div>
+        <div class="mock-exp"><span><div class="mock-exp-role" style="width:100px"></div><div class="mock-co" style="width:55px"></div></span><div class="mock-exp-date"></div></div>
+        <div class="mock-exp"><span><div class="mock-exp-role" style="width:90px"></div><div class="mock-co" style="width:80px"></div></span><div class="mock-exp-date"></div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">V3</p>
+      <h3 class="card-title">Scroll Scan Line</h3>
+      <p class="card-desc">A hairline blue bar sweeps slowly down the page in a loop — like a sonar or document scanner. Reads as technological without being loud.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <!-- V4: Left ink bleed -->
+  <a href="/previews/v4-ink.html" class="card">
+    <div class="thumb">
+      <div class="v4-ink"></div>
+      <div class="v4-line"></div>
+      <div class="v4-content">
+        <div class="mock-section">
+          <div class="mock-label"></div>
+          <div class="mock-title"></div>
+          <div class="mock-lines"><div class="mock-line" style="width:95%"></div><div class="mock-line" style="width:80%"></div></div>
+        </div>
+        <div class="mock-exp" style="margin-left:0.5rem"><span><div class="mock-exp-role"></div><div class="mock-co"></div></span><div class="mock-exp-date"></div></div>
+        <div class="mock-exp" style="margin-left:0.5rem"><span><div class="mock-exp-role" style="width:100px"></div><div class="mock-co" style="width:55px"></div></span><div class="mock-exp-date"></div></div>
+        <div class="mock-exp" style="margin-left:0.5rem"><span><div class="mock-exp-role" style="width:90px"></div><div class="mock-co" style="width:80px"></div></span><div class="mock-exp-date"></div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">V4</p>
+      <h3 class="card-title">Blue Edge + Ink Bleed</h3>
+      <p class="card-desc">A 2px solid blue vertical line on the far left edge of the page, with a very subtle blue-tinted shadow bleeding inward behind the content.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+  <!-- V5: Horizon glow -->
+  <a href="/previews/v5-horizon.html" class="card">
+    <div class="thumb">
+      <div class="v5-line"></div>
+      <div class="v5-glow"></div>
+      <div class="v5-content">
+        <div class="mock-section">
+          <div class="mock-label"></div>
+          <div class="mock-title"></div>
+          <div class="mock-lines"><div class="mock-line" style="width:95%"></div><div class="mock-line" style="width:80%"></div></div>
+        </div>
+        <div class="mock-exp"><span><div class="mock-exp-role"></div><div class="mock-co"></div></span><div class="mock-exp-date"></div></div>
+        <div class="mock-exp"><span><div class="mock-exp-role" style="width:100px"></div><div class="mock-co" style="width:55px"></div></span><div class="mock-exp-date"></div></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-tag">V5</p>
+      <h3 class="card-title">Blue Horizon</h3>
+      <p class="card-desc">A faint blue hairline cuts horizontally across the page between sections, with a soft upward glow beneath it. Like a lit horizon at dusk.</p>
+      <span class="open-btn">Open preview →</span>
+    </div>
+  </a>
+
+</div>
+
+<script>
+// Animate V1 wavy path in the thumbnail
+const path = document.getElementById('vp1');
+const dot = document.getElementById('vc1');
+let t = 0;
+function animV1() {
+  t += 0.018;
+  const pts = [];
+  for (let y = 0; y <= 200; y += 8) {
+    const x = 16 + Math.sin(y * 0.055 + t) * 6;
+    pts.push(`${x},${y}`);
+  }
+  path.setAttribute('d', 'M ' + pts.join(' L '));
+  const dotY = 80 + Math.sin(t) * 40;
+  const dotX = 16 + Math.sin(dotY * 0.055 + t) * 6;
+  dot.setAttribute('cx', dotX);
+  dot.setAttribute('cy', dotY);
+  requestAnimationFrame(animV1);
+}
+animV1();
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option P — Physical Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1008;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 3rem 1rem 5rem;
+    overflow-x: hidden;
+  }
+
+  /* DESK TEXTURE */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse at 30% 70%, #0f0800 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, #120c02 0%, transparent 60%),
+      #1a1008;
+  }
+
+  /* TABLE LABEL */
+  .desk-label {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #3a2c10; margin-bottom: 2rem; align-self: flex-start; padding-left: 2rem;
+  }
+
+  /* BOOK */
+  .book-wrap {
+    perspective: 1800px;
+    width: min(680px, 100%);
+  }
+
+  .book {
+    position: relative;
+    width: 100%;
+    transform-style: preserve-3d;
+  }
+
+  /* PAGE STACK (depth effect) */
+  .page-stack {
+    position: absolute; inset: 0;
+    background: #f5f0e8;
+    border-radius: 2px 8px 8px 2px;
+    box-shadow: 2px 0 0 #e8e0d0, 4px 0 0 #ddd5c5, 6px 0 0 #d0c8b8;
+    transform: translateX(4px);
+    z-index: 0;
+  }
+
+  /* COVER */
+  .book-cover {
+    position: relative; z-index: 10;
+    background: linear-gradient(160deg, #1c1408 0%, #0e0a04 100%);
+    border-radius: 2px 8px 8px 2px;
+    box-shadow:
+      -4px 0 12px rgba(0,0,0,0.6),
+      4px 0 8px rgba(0,0,0,0.4),
+      0 20px 60px rgba(0,0,0,0.8),
+      inset 2px 0 8px rgba(255,200,100,0.03);
+    padding: 3.5rem 3rem;
+    min-height: 480px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border-left: 6px solid #c8a96e;
+    cursor: pointer;
+    transition: transform 0.08s;
+  }
+  .book-cover:hover { transform: translateY(-2px); }
+  .book-cover:active { transform: translateY(0); }
+
+  /* Embossed texture */
+  .book-cover::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 2px 8px 8px 2px;
+    background: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,0.008) 3px, rgba(255,255,255,0.008) 4px);
+    pointer-events: none;
+  }
+
+  .cover-top { }
+  .cover-ornament {
+    font-size: 1.4rem; color: #c8a96e; opacity: 0.5; margin-bottom: 1.5rem;
+    letter-spacing: 0.3em;
+  }
+  .cover-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700;
+    color: #f0e8d8; letter-spacing: -0.01em; line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .cover-subtitle {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1rem; font-style: italic; color: #c8a96e; letter-spacing: 0.04em;
+  }
+  .cover-rule {
+    height: 1px; background: linear-gradient(to right, #c8a96e, transparent);
+    margin: 1.5rem 0;
+  }
+  .cover-meta {
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #5a4a28; line-height: 2;
+  }
+  .cover-bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .cover-edition {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.78rem; color: #3a2c10; letter-spacing: 0.06em;
+  }
+  .cover-crest {
+    font-size: 2rem; color: #c8a96e; opacity: 0.3;
+  }
+  .cover-hint {
+    font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #2a1e08; margin-top: 1rem; text-align: center;
+    animation: pulse-hint 2s ease infinite;
+  }
+  @keyframes pulse-hint { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+  /* OPEN BOOK */
+  .open-book {
+    display: none;
+    background: #f8f3eb;
+    border-radius: 2px 8px 8px 2px;
+    box-shadow:
+      -4px 0 12px rgba(0,0,0,0.5),
+      0 20px 60px rgba(0,0,0,0.7),
+      inset 40px 0 60px rgba(0,0,0,0.08);
+    position: relative; z-index: 10;
+  }
+  .open-book.visible { display: grid; grid-template-columns: 1fr 1fr; }
+
+  /* SPINE SHADOW */
+  .open-book::after {
+    content: '';
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 40px; transform: translateX(-50%);
+    background: linear-gradient(to right, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.06) 100%);
+    pointer-events: none; z-index: 1;
+  }
+
+  .page {
+    padding: 2.5rem 2rem; min-height: 520px;
+    border-right: 1px solid #e0d8c8;
+    color: #1a1410;
+  }
+  .page:last-child { border-right: none; }
+  .page-num {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.72rem; color: #a89878; text-align: center;
+    margin-bottom: 1.5rem; letter-spacing: 0.08em;
+  }
+  .page-chapter {
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #a89878; margin-bottom: 0.4rem;
+  }
+  .page h2 {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.5rem; font-weight: 700; line-height: 1.2;
+    margin-bottom: 0.75rem; color: #1a1410;
+  }
+  .page-rule { height: 1px; background: linear-gradient(to right, #c8a96e, #e0d8c8); margin: 0.75rem 0 1rem; }
+  .page p { font-family: 'EB Garamond', Georgia, serif; font-size: 0.95rem; line-height: 1.85; color: #3a3028; margin-bottom: 1rem; }
+  .page p a { color: #8a6830; }
+  .drop-cap::first-letter {
+    float: left; font-family: 'EB Garamond', Georgia, serif;
+    font-size: 3.5rem; line-height: 0.75; margin: 0.1rem 0.3rem 0 0;
+    color: #c8a96e; font-weight: 700;
+  }
+  .page-aside {
+    background: #f0ead8; border-left: 2px solid #c8a96e;
+    padding: 0.75rem 0.9rem; margin: 1rem 0;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.85rem; font-style: italic; color: #5a4830; line-height: 1.6;
+  }
+  .footnote { font-size: 0.72rem; color: #a89878; border-top: 1px solid #e0d8c8; margin-top: 1.5rem; padding-top: 0.75rem; font-family: 'EB Garamond', Georgia, serif; line-height: 1.6; }
+
+  /* NAV BUTTONS */
+  .book-nav {
+    display: flex; justify-content: center; gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .nav-btn {
+    background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3);
+    color: #c8a96e; padding: 0.5rem 1.5rem; border-radius: 3px;
+    cursor: pointer; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: all 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .nav-btn:hover { background: rgba(200,169,110,0.2); }
+  .nav-btn:disabled { opacity: 0.2; cursor: default; }
+  .page-indicator { font-size: 0.7rem; color: #3a2c10; letter-spacing: 0.1em; align-self: center; }
+
+  .preview-badge { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #c8a96e; color: #1a1008; padding: 0.4rem 1rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 20px; z-index: 999; font-family: 'Inter', sans-serif; }
+  .back-bar { position: fixed; bottom: 1.5rem; left: 1.5rem; background: rgba(26,16,8,0.95); border: 1px solid #2a1e08; color: #5a4828; padding: 0.4rem 1rem; font-size: 0.7rem; letter-spacing: 0.08em; border-radius: 20px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; font-family: 'Inter', sans-serif; }
+  .back-bar:hover { color: #c8a96e; }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← All Previews</a>
+<div class="preview-badge">Option P — Physical Portfolio</div>
+
+<div class="desk-label">Personal Portfolio · Scott Seidel · 2025</div>
+
+<div class="book-wrap">
+  <div class="book">
+    <div class="page-stack"></div>
+
+    <!-- COVER -->
+    <div class="book-cover" id="cover" onclick="openBook()">
+      <div class="cover-top">
+        <div class="cover-ornament">— ✦ —</div>
+        <div class="cover-title">Scott<br>Seidel</div>
+        <div class="cover-subtitle">Managing Director, AI Data Programs</div>
+        <div class="cover-rule"></div>
+        <div class="cover-meta">
+          Ph.D. Chemical Engineering<br>
+          14 Years · Global Programs<br>
+          California, United States
+        </div>
+      </div>
+      <div class="cover-bottom">
+        <div class="cover-edition">First Edition · 2025</div>
+        <div class="cover-crest">⬡</div>
+      </div>
+      <div class="cover-hint">Open portfolio →</div>
+    </div>
+
+    <!-- OPEN BOOK -->
+    <div class="open-book" id="openBook">
+      <!-- Pages rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<div class="book-nav" id="bookNav" style="display:none">
+  <button class="nav-btn" id="prevBtn" onclick="changePage(-1)" disabled>← Prev</button>
+  <span class="page-indicator" id="pageInd"></span>
+  <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</div>
+
+<script>
+const pages = [
+  {
+    left: {
+      chapter: 'Foreword', title: 'About Me',
+      body: `<p class="drop-cap">I am driven by tackling the most intriguing challenges in product development. With a Ph.D. in Chemical Engineering and over 14 years managing technical programs, I bring expertise across diverse domains.</p>
+      <div class="page-aside">"Proactive leadership and clear decision-making frameworks empower teams to drive innovation."</div>
+      <p>Beginning my career in materials science research, I discovered my passion for innovative tech products during my tenure as a failure analysis engineer.</p>`,
+      footnote: '¹ Scholar profile: scholar.google.com — 12 peer-reviewed publications'
+    },
+    right: {
+      chapter: 'Background', title: 'Current Work',
+      body: `<p>I pivoted to consulting for Big Tech clients, directing global-scale data programs critical to developing some of the leading AI technologies on the market today.</p>
+      <p>Later, at Cruise, I worked to solve complex AI and operational challenges in commercializing autonomous vehicle technology.</p>
+      <p>Currently, I am Managing Director at <em>Soqono</em>, designing and executing custom AI training data collection programs for leading technology companies worldwide.</p>`,
+      footnote: '² Soqono: soqono.com'
+    }
+  },
+  {
+    left: {
+      chapter: 'Chapter I', title: 'AI Data Programs',
+      body: `<p class="drop-cap">Directing global AI training data collection programs across AR/VR, autonomous vehicles, biometrics, computational photography, and wearables.</p>
+      <p>Working with leading technology companies to design and execute programs at scale, spanning every continent.</p>`,
+      footnote: '³ Programs active across five continents'
+    },
+    right: {
+      chapter: 'Chapter II', title: 'Autonomous Vehicles',
+      body: `<p class="drop-cap">Led VP-sponsored programs at Cruise critical to mitigating risks and resolving bottlenecks during the scaling of autonomous vehicle technology.</p>
+      <p>Collaborated across engineering and operations to enhance product reliability and performance during one of the most complex commercialization efforts in modern transportation.</p>
+      <div class="page-aside">The gap between simulation and real-world mileage data remains the defining challenge of the AV industry — see <em>Musings</em>.</div>`,
+      footnote: ''
+    }
+  },
+  {
+    left: {
+      chapter: 'Chapter III', title: 'Research',
+      body: `<p class="drop-cap">Led a team of researchers pioneering novel material processing methods for consumer electronics, biomedical, and aerospace applications.</p>
+      <p>Published 12 peer-reviewed papers and filed 1 patent on novel processing methods that have since been adopted in commercial applications.</p>`,
+      footnote: '⁴ Patent US9376516'
+    },
+    right: {
+      chapter: 'Musings', title: 'Selected Writing',
+      body: `<p><em>Geographic Bias in LLMs</em> — 50% higher error rates for sub-Saharan Africa vs. North America across 20 models. July 2024.</p>
+      <div class="page-rule"></div>
+      <p><em>Energy of LLMs</em> — Training GPT-3 uses as much energy as 100 U.S. homes in a year. July 2024.</p>
+      <div class="page-rule"></div>
+      <p><em>Model Collapse from Synthetic Data</em> — A worst-case study of what happens when AI trains on AI. August 2024.</p>`,
+      footnote: '⁵ All posts at scott-seidel.com/musings'
+    }
+  }
+];
+
+let currentPage = 0;
+
+function openBook() {
+  document.getElementById('cover').style.display = 'none';
+  const ob = document.getElementById('openBook');
+  ob.classList.add('visible');
+  document.getElementById('bookNav').style.display = 'flex';
+  renderPage(0);
+}
+
+function renderPage(idx) {
+  const p = pages[idx];
+  const ob = document.getElementById('openBook');
+  ob.innerHTML = `
+    <div class="page">
+      <div class="page-num">— ${idx*2+1} —</div>
+      <div class="page-chapter">${p.left.chapter}</div>
+      <h2>${p.left.title}</h2>
+      <div class="page-rule"></div>
+      ${p.left.body}
+      ${p.left.footnote ? `<div class="footnote">${p.left.footnote}</div>` : ''}
+    </div>
+    <div class="page">
+      <div class="page-num">— ${idx*2+2} —</div>
+      <div class="page-chapter">${p.right.chapter}</div>
+      <h2>${p.right.title}</h2>
+      <div class="page-rule"></div>
+      ${p.right.body}
+      ${p.right.footnote ? `<div class="footnote">${p.right.footnote}</div>` : ''}
+    </div>
+  `;
+  document.getElementById('pageInd').textContent = `Pages ${idx*2+1}–${idx*2+2} of ${pages.length*2}`;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === pages.length - 1;
+}
+
+function changePage(dir) {
+  currentPage = Math.max(0, Math.min(pages.length-1, currentPage + dir));
+  renderPage(currentPage);
+}
+</script>
+</body>
+</html>

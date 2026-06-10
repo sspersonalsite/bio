@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Option K2 — Luminance</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #06060a;
+    --accent: #c8a96e;
+    --text: #edeae4;
+    --dim: #4a4640;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
+
+  canvas#lum { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 58px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem;
+    background: rgba(6,6,10,0.6); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.035);
+  }
+  .logo { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--dim); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  .hero {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; position: relative; z-index: 1;
+  }
+  .hero-content { position: relative; }
+  .eyebrow {
+    font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(200,169,110,0.55); margin-bottom: 1.8rem;
+    display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  }
+  .eyebrow-line { display: inline-block; width: 32px; height: 1px; background: rgba(200,169,110,0.3); }
+
+  h1 {
+    font-size: clamp(4rem, 11vw, 8.5rem); font-weight: 800;
+    letter-spacing: -0.04em; line-height: 0.88;
+    color: var(--text);
+  }
+  h1 .last { color: var(--accent); }
+
+  .sub {
+    margin-top: 1.5rem; font-size: 0.88rem; color: var(--dim);
+    letter-spacing: 0.08em;
+  }
+  .btn-row { margin-top: 2.8rem; display: flex; gap: 1rem; justify-content: center; }
+  .btn {
+    padding: 0.62rem 1.8rem; font-size: 0.76rem; letter-spacing: 0.1em;
+    text-transform: uppercase; border-radius: 3px; text-decoration: none; transition: all 0.25s;
+  }
+  .btn.solid { background: var(--accent); color: var(--bg); border: 1px solid var(--accent); }
+  .btn.solid:hover { background: #dfc080; border-color: #dfc080; }
+  .btn.outline { border: 1px solid rgba(255,255,255,0.08); color: var(--dim); }
+  .btn.outline:hover { border-color: rgba(200,169,110,0.4); color: var(--accent); }
+
+  /* ABOUT */
+  .section { position: relative; z-index: 1; padding: 6rem 2.5rem; max-width: 1000px; margin: 0 auto; }
+  .sec-label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; opacity: 0.7; }
+  .section h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 2.5rem; }
+  .about-grid { display: grid; grid-template-columns: 260px 1fr; gap: 4rem; align-items: start; }
+  .about-photo { width: 100%; aspect-ratio: 1; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); background: #0e0e12; }
+  .about-text p { font-size: 0.94rem; color: var(--dim); line-height: 1.85; margin-bottom: 1.2rem; }
+  .about-text a { color: var(--accent); text-decoration: none; }
+  .about-ctas { display: flex; gap: 1rem; margin-top: 1.8rem; }
+
+  .preview-badge { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--accent); color: var(--bg); padding: 0.38rem 0.9rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 20px; z-index: 999; }
+  .back-bar { position: fixed; bottom: 1.5rem; left: 1.5rem; background: rgba(6,6,10,0.95); border: 1px solid #1a1a20; color: var(--dim); padding: 0.38rem 0.9rem; font-size: 0.68rem; letter-spacing: 0.08em; border-radius: 20px; z-index: 999; text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .back-bar:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<a href="/previews/index.html" class="back-bar">← All Previews</a>
+<div class="preview-badge">Option K2 — Luminance</div>
+
+<canvas id="lum"></canvas>
+
+<nav>
+  <span class="logo">Scott Seidel</span>
+  <ul class="nav-links">
+    <li><a href="#" class="active">About</a></li>
+    <li><a href="#">Experience</a></li>
+    <li><a href="#">Musings</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="eyebrow">
+      <span class="eyebrow-line"></span>
+      Managing Director · AI Data Programs
+      <span class="eyebrow-line"></span>
+    </div>
+    <h1>Scott<br><span class="last">Seidel</span></h1>
+    <p class="sub">Ph.D. Chemical Engineering &nbsp;·&nbsp; 14 years &nbsp;·&nbsp; Global programs</p>
+    <div class="btn-row">
+      <a href="#about" class="btn solid">About me</a>
+      <a href="#" class="btn outline">Experience</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <p class="sec-label">Background</p>
+  <h2>About Me</h2>
+  <div class="about-grid">
+    <div class="about-photo"></div>
+    <div class="about-text">
+      <p>I am driven by tackling the most intriguing challenges in product development. With a Ph.D. in Chemical Engineering and over 14 years managing technical programs, I bring expertise across diverse domains.</p>
+      <p>Beginning my career in <a href="#">materials science research</a>, I discovered my passion for innovative tech products. I pivoted to consulting for Big Tech clients, directing global-scale data programs critical to developing some of the leading AI technologies on the market today.</p>
+      <p>Currently Managing Director at <a href="#">Soqono</a>, designing and executing custom AI training data collection programs for leading technology companies worldwide.</p>
+      <div class="about-ctas">
+        <a href="#" class="btn solid">View Experience</a>
+        <a href="#" class="btn outline">Read Musings</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const canvas = document.getElementById('lum');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+// Smooth mouse
+const mouse = { x: -9999, y: -9999 };
+const smooth = { x: -9999, y: -9999 };
+
+// Ambient orbs that drift independently
+const orbs = Array.from({ length: 4 }, (_, i) => ({
+  x: Math.random(), y: Math.random(),
+  vx: (Math.random() - 0.5) * 0.0008,
+  vy: (Math.random() - 0.5) * 0.0008,
+  r: 0.28 + Math.random() * 0.18,
+  // all in the same warm amber/indigo family — restrained
+  hue: i < 2 ? 38 : 250,      // gold vs deep indigo
+  sat: i < 2 ? 55 : 30,
+  alpha: 0.055 + Math.random() * 0.04,
+}));
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function draw() {
+  // Ease mouse
+  smooth.x += (mouse.x - smooth.x) * 0.04;
+  smooth.y += (mouse.y - smooth.y) * 0.04;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Ambient orbs
+  for (const o of orbs) {
+    o.x += o.vx; o.y += o.vy;
+    if (o.x < -0.1) o.x = 1.1;
+    if (o.x > 1.1)  o.x = -0.1;
+    if (o.y < -0.1) o.y = 1.1;
+    if (o.y > 1.1)  o.y = -0.1;
+
+    const cx = o.x * W, cy = o.y * H, r = o.r * Math.max(W, H);
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+    g.addColorStop(0,   `hsla(${o.hue},${o.sat}%,55%,${o.alpha})`);
+    g.addColorStop(0.5, `hsla(${o.hue},${o.sat}%,40%,${o.alpha * 0.4})`);
+    g.addColorStop(1,   `hsla(${o.hue},${o.sat}%,20%,0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // Mouse luminance — single soft warm gold glow, no color ramp
+  if (smooth.x > 0) {
+    const mr = Math.max(W, H) * 0.32;
+    const mg = ctx.createRadialGradient(smooth.x, smooth.y, 0, smooth.x, smooth.y, mr);
+    mg.addColorStop(0,    'rgba(200,169,110,0.11)');
+    mg.addColorStop(0.35, 'rgba(180,130,70,0.05)');
+    mg.addColorStop(1,    'rgba(0,0,0,0)');
+    ctx.fillStyle = mg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Tighter inner glow — like candlelight
+    const ig = ctx.createRadialGradient(smooth.x, smooth.y, 0, smooth.x, smooth.y, mr * 0.18);
+    ig.addColorStop(0,   'rgba(230,200,140,0.09)');
+    ig.addColorStop(1,   'rgba(200,169,110,0)');
+    ctx.fillStyle = ig;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', resize);
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+resize(); draw();
+</script>
+</body>
+</html>
