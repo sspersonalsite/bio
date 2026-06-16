@@ -601,11 +601,11 @@ img, video { max-width: 100%; display: block; }
 
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
-  /* Strip all backdrop-filters and fixed compositing layers on mobile */
+  /* Hide cursor on touch */
   .cursor { display: none; }
-  #particle-canvas { display: none; }
-  .section-card { backdrop-filter: none; -webkit-backdrop-filter: none; }
-  .nav-hamburger-float { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  /* Disable reveal animations on mobile — cards start visible, no jump-in */
+  [data-reveal], [data-reveal-stagger],
+  [data-reveal].in, [data-reveal-stagger].in { opacity: 1; transform: none; animation: none; }
 
   /* Nav: hide entire pill, float a bare hamburger in top-right */
   .site-nav { display: none; }
