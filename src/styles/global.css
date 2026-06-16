@@ -616,9 +616,8 @@ img, video { max-width: 100%; display: block; }
   .scroll-mouse { width: 18px; height: 28px; }
   .scroll-chevrons span { width: 6px; height: 6px; }
 
-  /* Disable reveal animations entirely on mobile — prevents paint jitter mid-scroll */
-  [data-reveal], [data-reveal-stagger],
-  [data-reveal].in, [data-reveal-stagger].in { opacity: 1; transform: none; animation: none; }
+  /* Reveal animations — no translateY on mobile */
+  [data-reveal], [data-reveal-stagger] { transform: none; }
 
   /* Cards */
   .section-card { padding: 0 1.2rem 1.4rem; }

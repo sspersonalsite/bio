@@ -118,6 +118,8 @@ const { title = 'Scott Seidel', page = '' } = Astro.props;
 
       let particles = [], W, H;
       const mouse = { x: -9999, y: -9999 };
+      const isMobile = window.matchMedia('(max-width: 640px)').matches;
+      let scrolling = false, scrollTimer;
 
       function resize() {
         W = canvas.width  = window.innerWidth;
@@ -144,6 +146,7 @@ const { title = 'Scott Seidel', page = '' } = Astro.props;
       }
 
       function tick() {
+        if (isMobile && scrolling) { requestAnimationFrame(tick); return; }
         ctx.clearRect(0, 0, W, H);
         for (const p of particles) {
           const dx   = p.x - mouse.x;
@@ -183,9 +186,14 @@ const { title = 'Scott Seidel', page = '' } = Astro.props;
         mouse.y = e.clientY;
       });
 
-      // Fade scroll indicator quickly — gone by 100px of scroll
-      const scrollLine = document.getElementById('scroll-line');
+      // Pause canvas during scroll on mobile to free compositor
       window.addEventListener('scroll', () => {
+        if (isMobile) {
+          scrolling = true;
+          clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(() => { scrolling = false; }, 150);
+        }
+        const scrollLine = document.getElementById('scroll-line');
         const pct = Math.max(0, 1 - window.scrollY / 100);
         if (scrollLine) scrollLine.style.opacity = pct;
       }, { passive: true });
