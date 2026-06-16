@@ -538,6 +538,45 @@ img, video { max-width: 100%; display: block; }
   text-decoration-color: rgba(3,124,254,0.4);
 }
 
+/* ---- Hamburger button (mobile only) ---- */
+.nav-hamburger {
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  gap: 4px; width: 32px; height: 32px;
+  background: none; border: none; padding: 0; margin-left: auto;
+}
+.nav-hamburger span {
+  display: block; width: 18px; height: 1.5px;
+  background: rgba(255,255,255,0.7);
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+/* ---- Mobile menu overlay ---- */
+.mobile-menu {
+  display: none;
+  position: fixed; inset: 0; z-index: 99;
+  background: rgba(5,5,5,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  flex-direction: column; justify-content: center; align-items: center;
+  gap: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.mobile-menu.open {
+  opacity: 1; pointer-events: all;
+}
+.mobile-menu-item {
+  display: block; width: 100%; text-align: center;
+  font-size: 1.6rem; font-weight: 300; letter-spacing: 0.06em;
+  color: var(--text-dim); padding: 1rem 2rem;
+  transition: color 0.2s;
+}
+.mobile-menu-item:hover { color: var(--text); }
+
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
   .hero-name-letter, .hero-meta-line, .hero-links, .scroll-line,
@@ -550,8 +589,27 @@ img, video { max-width: 100%; display: block; }
 
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
-  .hero { padding-left: 1.8rem; padding-right: 1.8rem; }
-  .container { padding: 0 1.8rem; }
+  /* Hide cursor on touch */
+  .cursor { display: none; }
+
+  /* Nav: show hamburger, hide desktop items */
+  .nav-item, .nav-sep-desktop, .nav-li-desktop { display: none; }
+  .nav-hamburger { display: flex; }
+  .mobile-menu { display: flex; }
+
+  /* Hero */
+  .hero { padding-left: 1.5rem; padding-right: 1.5rem; }
   .hero-name { font-size: clamp(3rem, 13vw, 5rem); letter-spacing: -0.01em; }
+  .hero-meta-line { font-size: 0.58rem; }
+
+  /* Scroll indicator — smaller on mobile */
+  .scroll-mouse { width: 18px; height: 28px; }
+  .scroll-chevrons span { width: 6px; height: 6px; }
+
+  /* Cards */
+  .section-card { padding: 0 1.2rem 1.4rem; }
+  .exp-block { flex-direction: column; }
+  .exp-anim { display: none; }
+  .container { padding: 0 1.5rem; }
   .post-row { grid-template-columns: 1fr; gap: 0.2rem; }
 }
