@@ -538,21 +538,30 @@ img, video { max-width: 100%; display: block; }
   text-decoration-color: rgba(3,124,254,0.4);
 }
 
-/* ---- Hamburger button (mobile only) ---- */
-.nav-hamburger {
+/* ---- Hamburger button (inside pill, desktop) ---- */
+.nav-hamburger { display: none; }
+
+/* ---- Floating hamburger (mobile only) ---- */
+.nav-hamburger-float {
   display: none;
+  position: fixed; top: 1.2rem; right: 1.2rem; z-index: 101;
   flex-direction: column; justify-content: center; align-items: center;
-  gap: 4px; width: 32px; height: 32px;
-  background: none; border: none; padding: 0; margin-left: auto;
+  gap: 5px; width: 40px; height: 40px;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  padding: 0;
+  animation: fadeIn 0.5s ease both; animation-delay: 200ms;
 }
-.nav-hamburger span {
-  display: block; width: 18px; height: 1.5px;
-  background: rgba(255,255,255,0.7);
+.nav-hamburger-float span {
+  display: block; width: 16px; height: 1.5px;
+  background: #94EC0E;
   transition: transform 0.22s ease, opacity 0.22s ease;
 }
-.nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
-.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-.nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+.nav-hamburger-float[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger-float[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger-float[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 /* ---- Mobile menu overlay ---- */
 .mobile-menu {
@@ -592,9 +601,9 @@ img, video { max-width: 100%; display: block; }
   /* Hide cursor on touch */
   .cursor { display: none; }
 
-  /* Nav: show hamburger, hide desktop items */
-  .nav-item, .nav-sep-desktop, .nav-li-desktop { display: none; }
-  .nav-hamburger { display: flex; }
+  /* Nav: hide entire pill, float a bare hamburger in top-right */
+  .site-nav { display: none; }
+  .nav-hamburger-float { display: flex; }
   .mobile-menu { display: flex; }
 
   /* Hero */
